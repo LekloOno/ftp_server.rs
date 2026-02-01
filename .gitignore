@@ -1,0 +1,17 @@
+/ftp-server/target/
+/ftp-server/.idea/
+/ftp-server/*.iml
+/ftp-server/.vscode/
+/ftp-server/.DS_Store
+/ftp-server/logs/
+/ftp-server/.env
+/ftp-server/.env.*
+./.idea
+/*.iml
+/.vscode/
+/.DS_Store
+/logs/
+/.env
+/.env.*
+
+/*.rs.bk
