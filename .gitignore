@@ -15,3 +15,6 @@ logs/
 .env.*
 
 /*.rs.bk
+
+# Rust
+target/
