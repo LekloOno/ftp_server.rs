@@ -3,7 +3,7 @@ mod cli;
 use std::net::{TcpListener, TcpStream};
 use std::thread;
 use std::io::{BufRead, BufReader, Write};
-
+use clap::Parser;
 enum Command {
     User(String),
     Pass(String),
@@ -62,20 +62,21 @@ fn parse_command(line: &str) -> Command {
 }
 
 fn main() {
-    let listener = TcpListener::bind("127.0.0.1:2121").unwrap();
-    println!("FTP server listening on port 2121");
+    let args = cli::Cli::parse();
+
+    let addr = format!("{}:{}", args.host, args.port);
+
+    let listener = TcpListener::bind(&addr).unwrap();
 
     for stream in listener.incoming() {
         match stream {
-            Ok(s) => {
-                println!("New client connected: {:?}", s.peer_addr().unwrap());
-                thread::spawn(move || {
-                    handle_client(s);
-                });
+            Ok(stream) => {
+                thread::spawn(move || {handle_client(stream)});
             }
             Err(e) => {
-                eprintln!("Error : {}", e);
+                eprintln!("Connection failed: {}", e);
             }
         }
     }
+
 }

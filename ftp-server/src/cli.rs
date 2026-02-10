@@ -12,7 +12,7 @@ pub struct Cli {
     pub password: String,
 
     /// Port to listen on - default: 2121
-    #[arg(short, long, default_value = "2121")]
+    #[arg(short='P', long, default_value = "2121")]
     pub port: u16,
 
     /// Host to bind to - default: 127.0.0.1
