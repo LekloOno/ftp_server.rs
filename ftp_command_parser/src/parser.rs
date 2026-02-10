@@ -46,5 +46,5 @@ pub enum FtpParseError {
             Some(content) => content,
             None => "empty",
         })]
-    UnvalidCmdArg {arg: Option<String>, code: String},
+    UnvalidCmdArg {arg: Option<String>, code: &'static str},
 }
