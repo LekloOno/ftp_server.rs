@@ -1,3 +1,5 @@
+mod cli;
+
 use std::net::{TcpListener, TcpStream};
 use std::thread;
 use std::io::{BufRead, BufReader, Write};
