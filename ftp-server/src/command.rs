@@ -1,6 +1,8 @@
 use ftp_command_parser::command::FtpCommand;
 
 pub mod user;
+pub mod pass;
+pub mod pasv;
 
 /// # Notes
 /// We define Execute as an independant trait instead of binding it to FtpCommand as Execute: FtpCommand.
