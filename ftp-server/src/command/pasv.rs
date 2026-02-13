@@ -1,6 +1,6 @@
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
-use crate::command::{Execute, FtpCommandExec};
+use crate::command::{Execute, FtpCommandExec, tools};
 
 pub struct CmdPasv {}
 
@@ -14,11 +14,7 @@ impl Execute for CmdPasv {}
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdPasv {
     fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
-        // No arguments are expected for PASV commands 
-        if let Some(_) = &arg {
-            return Err(FtpParseError::UnvalidCmdArg { arg, code: Self::name() });
-        };
-
+        tools::get_no_args::<Self>(arg)?;
         Ok(Box::new(CmdPasv {}))
     }
 }

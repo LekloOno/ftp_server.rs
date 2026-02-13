@@ -1,6 +1,6 @@
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
-use crate::command::{Execute, FtpCommandExec};
+use crate::command::{Execute, FtpCommandExec, tools};
 
 #[allow(unused)]
 pub struct CmdUser {
@@ -17,20 +17,6 @@ impl Execute for CmdUser {}
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdUser {
     fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
-        // A username must be provided
-        let Some(username) = &arg else {
-            return Err(FtpParseError::UnvalidCmdArg { arg, code: Self::name() });
-        };
-
-        // We could be smarter and iterate then stop once we have more than one args
-        // This would avoid potential expensive collect .. Probably negligeable anyways
-        let args = username.split_whitespace().collect::<Vec<&str>>();
-
-        // Exactly one argument must be provided !
-        if args.len() != 1 {
-            return Err(FtpParseError::UnvalidCmdArg { arg, code: Self::name() });
-        }
-
-        Ok(Box::new(CmdUser { username: args[0].to_string() }))
+        Ok(Box::new(CmdUser { username: tools::get_one_arg::<Self>(arg)? }))
     }
 }
