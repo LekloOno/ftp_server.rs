@@ -1,8 +1,7 @@
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
-use crate::command::{Execute, FtpCommandExec};
+use crate::{client::FtpClient, command::{Execute, FtpCommandExec}};
 
-use std::net::TcpStream;
 use std::io::Write;
 
 #[allow(unused)]
@@ -17,8 +16,8 @@ impl FtpCommand for CmdList {
 }
 
 impl Execute for CmdList {
-    fn execute(&self, stream: &mut TcpStream) {
-        let _ = stream.write_all(b"200 Command recognized\r\n");
+    fn execute(&self, client: &mut FtpClient) {
+        let _ = client.control().write_all(b"200 Command recognized\r\n");
     }
 }
 

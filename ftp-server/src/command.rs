@@ -1,5 +1,6 @@
-use ftp_command_parser::command::FtpCommand;
-use std::net::TcpStream;
+use ftp_command_parser::command::{FtpCommand, FtpCommandDyn};
+
+use crate::client::FtpClient;
 
 pub(self) mod tools;
 
@@ -12,9 +13,9 @@ pub mod commands;
 /// We instead use a blanket implementation FtpCommandExec that binds them.
 /// The trait is empty for now, we focus on implementing Parse.
 pub trait Execute {
-    fn execute(&self, stream: &mut TcpStream);
+    fn execute(&self, client: &mut FtpClient);
 }
 
-pub trait FtpCommandExec : FtpCommand + Execute {}
+pub trait FtpCommandExec : FtpCommand + FtpCommandDyn + Execute {}
 
-impl<T> FtpCommandExec for T where T: FtpCommand + Execute {}
+impl<T> FtpCommandExec for T where T: FtpCommand + FtpCommandDyn + Execute {}
