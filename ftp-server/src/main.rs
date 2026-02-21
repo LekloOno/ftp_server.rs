@@ -28,11 +28,11 @@ fn create_parser() -> FtpCommandParser<dyn FtpCommandExec> {
     parser
 }
 
-fn handle_client(stream: TcpStream, parser: std::sync::Arc<FtpCommandParser<dyn FtpCommandExec>>) {
-    let mut stream_writer = stream.try_clone().expect("Failed to clone stream");
-    stream_writer.write_all(b"220 Welcome to the FTP server\r\n").unwrap();
-
-    let mut reader = BufReader::new(stream);
+fn handle_client(control: TcpStream, parser: std::sync::Arc<FtpCommandParser<dyn FtpCommandExec>>) {
+    let mut control_res = control.try_clone().expect("Failed to clone stream");
+    control_res.write_all(b"220 Welcome to the FTP server\r\n").unwrap();
+    
+    let mut reader = BufReader::new(&control);
     let mut line = String::new();
 
     loop {
@@ -52,19 +52,19 @@ fn handle_client(stream: TcpStream, parser: std::sync::Arc<FtpCommandParser<dyn 
             Ok(builder) => {
                 match builder.build(arg) {
                     Ok(command) => {
-                        command.execute(&mut stream_writer);
+                        command.execute(&mut control_res);
                         if code_static == "QUIT" {
                             break;
                         }
                     }
                     Err(e) => {
                         let msg = format!("501 Syntax error in parameters or arguments: {}\r\n", e);
-                        stream_writer.write_all(msg.as_bytes()).unwrap();
+                        control_res.write_all(msg.as_bytes()).unwrap();
                     }
                 }
             },
             Err(_) => {
-                stream_writer.write_all(b"500 Unknown command\r\n").unwrap();
+                control_res.write_all(b"500 Unknown command\r\n").unwrap();
             }
         }
     }
@@ -79,12 +79,12 @@ fn main() {
     let listener = TcpListener::bind(&addr).unwrap();
     println!("FTP Server listening on {}", addr);
 
-    for stream in listener.incoming() {
-        match stream {
-            Ok(stream) => {
+    for control in listener.incoming() {
+        match control {
+            Ok(control) => {
                 let p = std::sync::Arc::clone(&parser);
                 thread::spawn(move || {
-                    handle_client(stream, p);
+                    handle_client(control, p);
                 });
             }
             Err(e) => {
