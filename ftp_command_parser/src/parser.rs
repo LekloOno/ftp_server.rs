@@ -9,7 +9,7 @@ pub struct FtpCommandParser<T: FtpCommand + ?Sized + 'static> {
 }
 
 pub struct FtpCommandBuilder<T: FtpCommand + ?Sized + 'static> {
-    constructor: Box<dyn Fn(Option<String>) -> Result<Box<T>, FtpParseError>>,
+    constructor: Box<dyn Fn(Option<String>) -> Result<Box<T>, FtpParseError> + Send + Sync>,
 }
 
 impl<T: FtpCommand + ?Sized> FtpCommandBuilder<T> {
