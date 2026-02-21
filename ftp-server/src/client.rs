@@ -8,15 +8,23 @@ pub mod command;
 /// Represents the server-side state of an FtpClient
 pub struct FtpClient {
     control: TcpStream,
+    
     /// A cloned read stream from control tcp stream to enable
     /// buffered read without having to recreate the bufreader for every iteration.
     control_read: BufReader<TcpStream>,
+    
+    /// The data stream for this client. <br/>
+    /// It might not always be opened, hence the use of [`Option`]
     data: Option<TcpStream>,
-    pub username: String,
-    /// Whether or not the user has fully authentified yet
-    pub authentified: bool,
-    /// The format of data to be transfered over the data stream
+    
+    /// The format of data to be transfered over the data stream.
     pub data_type: DataType,
+
+    pub username: String,
+
+    /// Whether or not the user has fully authentified yet.
+    pub authentified: bool,
+
 }
 
 impl FtpClient {

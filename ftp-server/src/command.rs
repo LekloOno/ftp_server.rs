@@ -10,7 +10,7 @@ pub mod commands;
 /// We define Execute as an independant trait instead of binding it to FtpCommand as Execute: FtpCommand.
 /// Execute shouldn't be bound to the parsing method. They are not linked.
 /// 
-/// We instead use a blanket implementation FtpCommandExec that binds them.
+/// We instead use a blanket implementation [`FtpCommandExec`] that binds them.
 /// The trait is empty for now, we focus on implementing Parse.
 pub trait Execute {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()>;

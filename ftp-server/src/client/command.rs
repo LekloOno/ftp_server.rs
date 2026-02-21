@@ -8,10 +8,20 @@ use crate::command::Execute;
 impl FtpClient {
     /// Reads the control stream through the buffered reader, and tries to parse its content into a command.
     /// 
+    /// # Returns
+    /// * `Some(Box<T>)` - If the next line could be parsed to such an [`FtpCommand`].
+    /// * `None` - If the next line did not correspond to any parseable command.
     /// 
     /// # Params
     /// * `buf` - a pre-allocated buffer to avoid the repeated allocation cost
     /// * `parser` - the command parser to use
+    /// 
+    /// # Errors
+    /// The method handles all expected Ftp errors internally - that is, parsing errors dued to
+    /// unimplemented codes, malformed arguments and parameters as well as syntax errors - by sending
+    /// the appopriated responses over the client's control stream.
+    /// 
+    /// The only errors this method can return are purely I/O related errors.
     pub fn read_command<T: FtpCommand + Execute + ?Sized>(
         &mut self,
         buf: &mut String,
