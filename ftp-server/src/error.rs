@@ -1,5 +1,3 @@
-use std::path::PathBuf;
-
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, Error>;
@@ -10,6 +8,4 @@ pub enum Error {
     IoError(#[from] std::io::Error),
     #[error("Connection closed")]
     Quit,
-    #[error("Test {path}")]
-    Test {path: PathBuf},
 }
