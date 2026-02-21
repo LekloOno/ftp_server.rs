@@ -3,10 +3,13 @@ mod cli;
 
 use std::net::{TcpListener, TcpStream};
 use std::thread;
-use std::io::{BufRead, BufReader, Write};
+use std::io::{BufRead, BufReader};
 use clap::Parser;
 
 use ftp_command_parser::parser::FtpCommandParser;
+use ftp_server::response;
+use crate::response::*;
+
 use crate::command::FtpCommandExec;
 use crate::command::commands::{
     user::CmdUser, pass::CmdPass, pwd::CmdPwd, cwd::CmdCwd, 
@@ -31,7 +34,7 @@ fn create_parser() -> FtpCommandParser<dyn FtpCommandExec> {
 fn handle_client(control: TcpStream, parser: std::sync::Arc<FtpCommandParser<dyn FtpCommandExec>>) {
     // Cloned to enable buffered reader, without having to recreate the bufreader for every write iteration
     let mut control_res = control.try_clone().expect("Failed to clone stream");
-    control_res.write_all(b"220 Welcome to the FTP server\r\n").unwrap();
+    SuccessResponse::ServiceReady.send(&mut control_res).unwrap();
     
     let mut reader = BufReader::new(&control);
     let mut line = String::new();
@@ -57,13 +60,14 @@ fn handle_client(control: TcpStream, parser: std::sync::Arc<FtpCommandParser<dyn
                         }
                     }
                     Err(e) => {
-                        let msg = format!("501 Syntax error in parameters or arguments: {}\r\n", e);
-                        control_res.write_all(msg.as_bytes()).unwrap();
+                        PermanentError::ParamsArgsSyntax { details: e.to_string() }
+                            .send(&mut control_res).unwrap();
                     }
                 }
             },
             Err(_) => {
-                control_res.write_all(b"500 Unknown command\r\n").unwrap();
+                PermanentError::Generic { details: "Unknown command".to_string() }
+                    .send(&mut control_res).unwrap();
             }
         }
     }
@@ -77,7 +81,7 @@ fn main() {
 
     let listener = TcpListener::bind(&addr).unwrap();
     println!("FTP Server listening on {}", addr);
-
+    
     for control in listener.incoming() {
         match control {
             Ok(control) => {

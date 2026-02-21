@@ -6,3 +6,5 @@ edition = "2024"
 [dependencies]
 clap = { version = "4.5.57", features = ["derive"] }
 ftp_command_parser = { path = "../ftp_command_parser" }
+thiserror = "2.0.18"
+ftp_response_impl = { path = "../ftp_response_impl" }

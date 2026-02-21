@@ -104,6 +104,8 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "ftp_command_parser",
+ "ftp_response_impl",
+ "thiserror",
 ]
 
 [[package]]
@@ -111,6 +113,15 @@ name = "ftp_command_parser"
 version = "0.1.0"
 dependencies = [
  "thiserror",
+]
+
+[[package]]
+name = "ftp_response_impl"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
