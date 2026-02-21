@@ -7,4 +7,6 @@ pub enum PermanentError {
     Generic { details: String },
     #[ftp_res(code = 501, message = "Syntax error in parameters or arguments. {details}" )]
     ParamsArgsSyntax { details: String },
+    #[ftp_res(code = 502, message = "Command not implemented. {unimp_code}")]
+    Unimplemented { unimp_code: String },
 }

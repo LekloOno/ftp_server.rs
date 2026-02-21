@@ -35,7 +35,7 @@ impl FtpClient {
             .to_uppercase();
         
         let Ok(builder) = parser.get(&code) else {
-            PermanentError::Generic { details: "Unknown command".to_string() }
+            PermanentError::Unimplemented { unimp_code: code.to_string() }
                 .send(&mut self.control)?;
             return Ok(None);
         };
