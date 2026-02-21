@@ -2,6 +2,9 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 
 use crate::command::{Execute, FtpCommandExec, tools};
 
+use std::net::TcpStream;
+use std::io::Write;
+
 #[allow(unused)]
 pub struct CmdCdup {}
 
@@ -11,7 +14,11 @@ impl FtpCommand for CmdCdup {
     }
 }
 
-impl Execute for CmdCdup {}
+impl Execute for CmdCdup {
+    fn execute(&self, stream: &mut TcpStream) {
+        let _ = stream.write_all(b"200 Command recognized\r\n");
+    }
+}
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdCdup {
     fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {

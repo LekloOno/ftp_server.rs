@@ -2,6 +2,9 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 
 use crate::command::{Execute, FtpCommandExec, tools};
 
+use std::net::TcpStream;
+use std::io::Write;
+
 #[allow(unused)]
 pub struct CmdQuit {}
 
@@ -11,7 +14,11 @@ impl FtpCommand for CmdQuit {
     }
 }
 
-impl Execute for CmdQuit {}
+impl Execute for CmdQuit {
+    fn execute(&self, stream: &mut TcpStream) {
+        let _ = stream.write_all(b"221 Goodbye\r\n");
+    }
+}
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdQuit {
     fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {

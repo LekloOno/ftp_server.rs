@@ -1,4 +1,5 @@
 use ftp_command_parser::command::FtpCommand;
+use std::net::TcpStream;
 
 pub(self) mod tools;
 
@@ -10,7 +11,9 @@ pub mod commands;
 /// 
 /// We instead use a blanket implementation FtpCommandExec that binds them.
 /// The trait is empty for now, we focus on implementing Parse.
-pub trait Execute {}
+pub trait Execute {
+    fn execute(&self, stream: &mut TcpStream);
+}
 
 pub trait FtpCommandExec : FtpCommand + Execute {}
 
