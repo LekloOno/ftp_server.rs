@@ -16,8 +16,9 @@ impl FtpCommand for CmdPass {
 }
 
 impl Execute for CmdPass {
-    fn execute(&self, client: &mut FtpClient) {
+    fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
         let _ = client.control().write_all(b"200 Command recognized\r\n");
+        Ok(())
     }
 }
 

@@ -1,6 +1,6 @@
-use strum_macros::EnumString;
+use strum_macros::{Display, EnumString};
 
-#[derive(Debug, EnumString)]
+#[derive(Debug, EnumString, Clone, Display)]
 pub enum DataType {
     #[strum(serialize = "I")]
     Binary,

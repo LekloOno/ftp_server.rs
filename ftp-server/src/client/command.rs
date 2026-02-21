@@ -35,7 +35,7 @@ impl FtpClient {
             .to_uppercase();
         
         let Ok(builder) = parser.get(&code) else {
-            PermanentError::Unimplemented { unimp_code: code.to_string() }
+            PermanentError::Unimplemented { unimpl_code: code.to_string() }
                 .send(&mut self.control)?;
             return Ok(None);
         };

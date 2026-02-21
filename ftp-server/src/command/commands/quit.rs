@@ -14,8 +14,9 @@ impl FtpCommand for CmdQuit {
 }
 
 impl Execute for CmdQuit {
-    fn execute(&self, client: &mut FtpClient) {
+    fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
         let _ = client.control().write_all(b"200 Command recognized\r\n");
+        Err(crate::Error::Quit)
     }
 }
 

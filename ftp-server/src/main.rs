@@ -14,6 +14,8 @@ use ftp_server::command::commands::{
     pasv::CmdPasv, cdup::CmdCdup, list::CmdList, quit::CmdQuit
 };
 
+use ftp_server::Result;
+
 fn create_parser() -> FtpCommandParser<dyn FtpCommandExec> {
     let mut parser = FtpCommandParser::<dyn FtpCommandExec>::new();
     
@@ -29,22 +31,19 @@ fn create_parser() -> FtpCommandParser<dyn FtpCommandExec> {
     parser
 }
 
-fn handle_client(control: TcpStream, parser: std::sync::Arc<FtpCommandParser<dyn FtpCommandExec>>) {
+fn handle_client(control: TcpStream, parser: std::sync::Arc<FtpCommandParser<dyn FtpCommandExec>>) -> Result<()> {
     let mut client = FtpClient::new(control);
-    SuccessResponse::ServiceReady.send(&mut client.control()).unwrap();
+    SuccessResponse::ServiceReady.send(&mut client.control())?;
     
     let mut line = String::new();
 
     loop {
         line.clear();
-        let Some(command) = client.read_command(&mut line, parser.as_ref()).unwrap() else {
+        let Some(command) = client.read_command(&mut line, parser.as_ref())? else {
             continue;
         };
 
-        command.execute(&mut client);
-        if command.name() == "QUIT" {
-            break;
-        }
+        command.execute(&mut client)?;
     }
 }
 
@@ -62,7 +61,7 @@ fn main() {
             Ok(control) => {
                 let p = std::sync::Arc::clone(&parser);
                 thread::spawn(move || {
-                    handle_client(control, p);
+                    let _ = handle_client(control, p);
                 });
             }
             Err(e) => {
