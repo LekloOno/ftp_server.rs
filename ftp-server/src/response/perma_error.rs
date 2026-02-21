@@ -11,4 +11,6 @@ pub enum PermanentError {
     Unimplemented { unimpl_code: String },
     #[ftp_res(code = 504, message = "Command not implemented for that parameter. {unimpl_param}")]
     UnimplParameter { unimpl_param: String },
+    #[ftp_res(code = 530, message = "Not logged in.")]
+    NotLoggedIn,
 }

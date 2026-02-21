@@ -1,8 +1,8 @@
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
-use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
+use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}, response::{FtpResponse, SuccessResponse}};
 
-use std::io::Write;
+use std::env;
 
 #[allow(unused)]
 pub struct CmdPwd {}
@@ -15,8 +15,11 @@ impl FtpCommand for CmdPwd {
 
 impl Execute for CmdPwd {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
-        let _ = client.control().write_all(b"200 Command recognized\r\n");
-        Ok(())
+        check_auth!(client);
+
+        SuccessResponse::PathnameCreated { pathname: env::current_dir()? }
+            .send(client.control())
+            .map_err(crate::Error::from)
     }
 }
 

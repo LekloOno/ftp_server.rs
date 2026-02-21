@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use crate::response::FtpResponse;
 use ftp_response_impl::FtpResponse;
 
@@ -9,6 +11,8 @@ pub enum SuccessResponse {
     ServiceReady,
     #[ftp_res(code = 227, message = "Entering passive mode ({h1},{h2},{h3},{h4},{p1},{p2})")]
     EnteringPasv { h1: u8, h2: u8, h3: u8, h4: u8, p1: u8, p2: u8 },
+    #[ftp_res(code = 257, message = "{pathname:?}")]
+    PathnameCreated { pathname: PathBuf },
 }
 
 /// A quick helper to send a generic Ok response, with an optionnal custom message

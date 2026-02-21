@@ -4,6 +4,7 @@ use std::net::TcpStream;
 use crate::data::DataType;
 
 pub mod command;
+pub mod tools;
 
 /// Represents the server-side state of an FtpClient
 pub struct FtpClient {
