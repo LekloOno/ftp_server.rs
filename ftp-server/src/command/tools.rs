@@ -15,7 +15,7 @@ pub fn get_no_args<T: FtpCommand>(arg: Option<String>) -> Result<(), FtpParseErr
         return Ok(());
     }
 
-    Err(FtpParseError::UnvalidCmdArg { arg, code: T::name() })
+    Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() })
 }
 
 /// Checks if the provided arg option contains exactly one argument.
@@ -25,7 +25,7 @@ pub fn get_no_args<T: FtpCommand>(arg: Option<String>) -> Result<(), FtpParseErr
 /// If it contains exactly one string argument, returns such argument.
 pub fn get_one_arg<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpParseError> {
     let Some(password) = &arg else {
-        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name() });
+        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
     };
     
     // We could be smarter and iterate then stop once we have more than one args
@@ -33,7 +33,7 @@ pub fn get_one_arg<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpPars
     let args = password.split_whitespace().collect::<Vec<&str>>();
 
     if args.len() != 1 {
-        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name() });
+        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
     }
 
     Ok(args[0].to_string())

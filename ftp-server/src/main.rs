@@ -29,6 +29,7 @@ fn create_parser() -> FtpCommandParser<dyn FtpCommandExec> {
 }
 
 fn handle_client(control: TcpStream, parser: std::sync::Arc<FtpCommandParser<dyn FtpCommandExec>>) {
+    // Cloned to enable buffered reader, without having to recreate the bufreader for every write iteration
     let mut control_res = control.try_clone().expect("Failed to clone stream");
     control_res.write_all(b"220 Welcome to the FTP server\r\n").unwrap();
     
@@ -46,14 +47,12 @@ fn handle_client(control: TcpStream, parser: std::sync::Arc<FtpCommandParser<dyn
         let code = parts.next().unwrap_or("").to_uppercase();
         let arg = parts.next().map(|s| s.to_string());
 
-        let code_static: &'static str = Box::leak(code.into_boxed_str());
-
-        match parser.get(code_static) {
+        match parser.get(&code) {
             Ok(builder) => {
                 match builder.build(arg) {
                     Ok(command) => {
                         command.execute(&mut control_res);
-                        if code_static == "QUIT" {
+                        if code == "QUIT" {
                             break;
                         }
                     }

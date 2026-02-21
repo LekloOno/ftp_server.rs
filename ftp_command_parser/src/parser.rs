@@ -30,21 +30,21 @@ impl<T: FtpCommand + ?Sized> FtpCommandParser<T> {
         );
     }
 
-    pub fn get(&self, code: &'static str) -> Result<&FtpCommandBuilder<T>, FtpParseError> {
+    pub fn get(&self, code: &str) -> Result<&FtpCommandBuilder<T>, FtpParseError> {
         self.commands
             .get(code)
-            .ok_or_else(|| FtpParseError::CmdNameNotFound { code })
+            .ok_or_else(|| FtpParseError::CmdNameNotFound { code: code.to_string() })
     }
 }
 
 #[derive(Error, Debug)]
 pub enum FtpParseError {
     #[error("'{code}' is not a registered command code")]
-    CmdNameNotFound {code: &'static str},
+    CmdNameNotFound {code: String},
     #[error("'{}' argument is invalid for command code '{code}'",
         match arg {
             Some(content) => content,
             None => "empty",
         })]
-    UnvalidCmdArg {arg: Option<String>, code: &'static str},
+    UnvalidCmdArg {arg: Option<String>, code: String},
 }

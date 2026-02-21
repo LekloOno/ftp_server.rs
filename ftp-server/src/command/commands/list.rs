@@ -35,7 +35,7 @@ impl BuildableFtpCommand<dyn FtpCommandExec> for CmdList {
         let pathname = match args.len() {
             0 => None,
             1 => Some(args[0].to_string()),
-            _ => Err(FtpParseError::UnvalidCmdArg { arg, code: Self::name() })?,
+            _ => Err(FtpParseError::UnvalidCmdArg { arg, code: Self::name().to_string() })?,
         };
 
         Ok(Box::new(CmdList {pathname}))
