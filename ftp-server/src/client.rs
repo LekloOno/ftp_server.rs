@@ -16,7 +16,7 @@ pub struct FtpClient {
     
     /// The data stream for this client. <br/>
     /// It might not always be opened, hence the use of [`Option`]
-    data: Option<TcpStream>,
+    pub data: Option<TcpStream>,
     
     /// The format of data to be transfered over the data stream.
     pub data_type: DataType,

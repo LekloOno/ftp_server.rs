@@ -17,6 +17,8 @@ pub enum SuccessResponse {
     UserLoggedIn,
     #[ftp_res(code = 250, message = "Requested file action okay, completed.")]
     DirectoryChanged,
+    #[ftp_res(code = 226, message = "Closing data connection. Requested file action successful.")]
+    ClosingDataConnection,
 }
 
 /// A quick helper to send a generic Ok response, with an optionnal custom message
