@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -7,17 +9,24 @@ pub struct Cli {
     #[arg(short, long, default_value = "anonymous")]
     pub username: String,
 
-    /// Password for FTP login - default: "anonymous"
-    #[arg(short, long, default_value = "anonymous")]
-    pub password: String,
+    /// Password for FTP login - default: No password
+    #[arg(short, long)]
+    pub password: Option<String>,
 
     /// Port to listen on - default: 2121
     #[arg(short='P', long, default_value = "2121")]
     pub port: u16,
 
-    /// Host to bind to - default: 127.0.0.1
-    #[arg(default_value = "127.0.0.1")]
-    pub host: String
+    /// Prevents users from traversing parent directories of the `root_path`.
+    #[arg(short='t', long, default_value = "true")]
+    pub prevent_traversal: bool,
 
+    /// Host to bind to - default: 127.0.0.1
+    #[arg(short='H', long, default_value = "127.0.0.1")]
+    pub host: String,
+
+    /// Sets the initial root directory to serve
+    #[arg(default_value = ".")]
+    pub root_path: PathBuf,
 }
 

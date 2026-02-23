@@ -2,12 +2,15 @@ use std::io::BufReader;
 use std::net::TcpStream;
 
 use crate::data::DataType;
+use crate::server::FtpServer;
 
 pub mod command;
+pub mod run;
 pub mod tools;
 
 /// Represents the server-side state of an FtpClient
-pub struct FtpClient {
+pub struct FtpClient<'a> {
+    server: &'a FtpServer,
     control: TcpStream,
     
     /// A cloned read stream from control tcp stream to enable
@@ -25,11 +28,10 @@ pub struct FtpClient {
 
     /// Whether or not the user has fully authentified yet.
     pub authentified: bool,
-
 }
 
-impl FtpClient {
-    pub fn new(control: TcpStream) -> Self {
+impl<'a> FtpClient<'a> {
+    pub fn new(control: TcpStream, server: &'a FtpServer) -> Self {
         Self {
             control: control.try_clone().unwrap(),
             control_read: BufReader::new(control),
@@ -37,6 +39,7 @@ impl FtpClient {
             username: String::new(),
             authentified: false,
             data_type: DataType::Binary,
+            server
         }
     }
 

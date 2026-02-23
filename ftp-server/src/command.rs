@@ -13,7 +13,7 @@ pub mod commands;
 /// We instead use a blanket implementation [`FtpCommandExec`] that binds them.
 /// The trait is empty for now, we focus on implementing Parse.
 pub trait Execute {
-    fn execute(&self, client: &mut FtpClient) -> crate::Result<()>;
+    fn execute<'a>(&self, client: &mut FtpClient<'a>) -> crate::Result<()>;
 }
 
 pub trait FtpCommandExec : FtpCommand + FtpCommandDyn + Execute {}

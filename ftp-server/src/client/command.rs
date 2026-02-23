@@ -1,11 +1,9 @@
 use std::io::BufRead;
 
-use ftp_command_parser::{command::FtpCommand, parser::FtpCommandParser};
-
 use crate::{client::FtpClient, response::*};
-use crate::command::Execute;
+use crate::command::FtpCommandExec;
 
-impl FtpClient {
+impl<'a> FtpClient<'a> {
     /// Reads the control stream through the buffered reader, and tries to parse its content into a command.
     /// 
     /// # Returns
@@ -22,11 +20,10 @@ impl FtpClient {
     /// the appopriated responses over the client's control stream.
     /// 
     /// The only errors this method can return are purely I/O related errors.
-    pub fn read_command<T: FtpCommand + Execute + ?Sized>(
+    pub fn read_command(
         &mut self,
-        buf: &mut String,
-        parser: &FtpCommandParser<T>
-    ) -> std::io::Result<Option<Box<T>>> {    
+        buf: &mut String
+    ) -> std::io::Result<Option<Box<dyn FtpCommandExec>>> {    
         buf.clear();
         if self.control_read.read_line(buf)? == 0 {
             return Ok(None)
@@ -44,7 +41,7 @@ impl FtpClient {
             .unwrap_or("")
             .to_uppercase();
         
-        let Ok(builder) = parser.get(&code) else {
+        let Ok(builder) = self.server.parser.get(&code) else {
             PermanentError::Unimplemented { unimpl_code: code.to_string() }
                 .send(&mut self.control)?;
             return Ok(None);
