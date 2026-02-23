@@ -11,7 +11,7 @@ use ftp_server::response::*;
 use ftp_server::command::FtpCommandExec;
 use ftp_server::command::commands::{
     user::CmdUser, pass::CmdPass, pwd::CmdPwd, cwd::CmdCwd, 
-    pasv::CmdPasv, cdup::CmdCdup, list::CmdList, quit::CmdQuit
+    pasv::CmdPasv, cdup::CmdCdup, list::CmdList, quit::CmdQuit, dtype::CmdType
 };
 
 use ftp_server::Result;
@@ -27,6 +27,7 @@ fn create_parser() -> FtpCommandParser<dyn FtpCommandExec> {
     parser.register::<CmdCdup>();
     parser.register::<CmdList>();
     parser.register::<CmdQuit>();
+    parser.register::<CmdType>();
     
     parser
 }
