@@ -28,7 +28,7 @@ impl FtpClient {
         parser: &FtpCommandParser<T>
     ) -> std::io::Result<Option<Box<T>>> {    
         buf.clear();
-        if self.control_read.read_line(buf).unwrap() == 0 {
+        if self.control_read.read_line(buf)? == 0 {
             return Ok(None)
         };
 
