@@ -7,6 +7,10 @@ impl FtpServer {
         env::current_dir()
     }
 
+    /// Checks if the target path is valid then proceeds.
+    /// 
+    /// Such validation can typically be checking if the target is not a parent of root
+    /// if root traversal protection is enabled.
     pub fn set_current_dir(&self, pathname: &str) -> crate::Result<()> {
         if self.protect_root {
             let target = PathBuf::from(pathname).canonicalize()?;

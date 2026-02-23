@@ -1,6 +1,7 @@
 use crate::{client::FtpClient, response::{FtpResponse, SuccessResponse}};
 
 impl<'a> FtpClient<'a> {
+    /// Starts the client communication, and listens incoming commands.
     pub fn run(&mut self) -> crate::Result<()> {
         SuccessResponse::ServiceReady.send(&mut self.control())?;
     

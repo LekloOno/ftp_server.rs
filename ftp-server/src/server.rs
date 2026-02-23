@@ -25,8 +25,11 @@ pub struct FtpServer {
     /// Also, the password is stored in plain text, but we'd obviously
     /// rather store it hashed in real use. 
     pub users: HashMap<String, Option<String>>,
+    /// The path of the initial served directory.
     pub root_path: PathBuf,
+    /// If true, prevents from traversing `root_path` up.
     pub protect_root: bool,
+    /// The parser used to interpret incoming client commands.
     pub parser: FtpCommandParser<dyn FtpCommandExec>,
 }
 

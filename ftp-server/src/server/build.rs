@@ -44,6 +44,7 @@ impl FtpServer {
         self
     }
 
+    /// Registers the `B` command to this server's parser so that it can be recognized.
     pub fn register_command<B>(mut self) -> Self
     where
         B: BuildableFtpCommand<dyn FtpCommandExec> + 'static
