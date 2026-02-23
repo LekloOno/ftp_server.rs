@@ -3,6 +3,8 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 
 use std::io::Write;
+use crate::response::{FtpResponse, SuccessResponse, PermanentError};
+use std::env;
 
 #[allow(unused)]
 pub struct CmdCwd {
@@ -17,7 +19,16 @@ impl FtpCommand for CmdCwd {
 
 impl Execute for CmdCwd {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
-        let _ = client.control().write_all(b"200 Command recognized\r\n");
+        crate::check_auth!(client);
+
+        if let Err(_) = env::set_current_dir(&self.pathname) {
+            PermanentError::Generic { 
+                details: "Failed to change directory".to_string() 
+            }.send(client.control())?;
+        } 
+        else {
+            SuccessResponse::DirectoryChanged.send(client.control())?;
+        }
         Ok(())
     }
 }

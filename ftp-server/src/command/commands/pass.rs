@@ -3,6 +3,7 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 
 use std::io::Write;
+use crate::response::{FtpResponse, SuccessResponse};
 
 #[allow(unused)]
 pub struct CmdPass {
@@ -17,7 +18,8 @@ impl FtpCommand for CmdPass {
 
 impl Execute for CmdPass {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
-        let _ = client.control().write_all(b"200 Command recognized\r\n");
+        client.authentified = true;
+        SuccessResponse::UserLoggedIn.send(client.control())?;
         Ok(())
     }
 }

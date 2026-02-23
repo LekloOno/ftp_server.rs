@@ -13,6 +13,10 @@ pub enum SuccessResponse {
     EnteringPasv { h1: u8, h2: u8, h3: u8, h4: u8, p1: u8, p2: u8 },
     #[ftp_res(code = 257, message = "{pathname:?}")]
     PathnameCreated { pathname: PathBuf },
+    #[ftp_res(code = 230, message = "User logged in, proceed.")]
+    UserLoggedIn,
+    #[ftp_res(code = 250, message = "Requested file action okay, completed.")]
+    DirectoryChanged,
 }
 
 /// A quick helper to send a generic Ok response, with an optionnal custom message
