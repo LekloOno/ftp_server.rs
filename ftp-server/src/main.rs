@@ -25,7 +25,7 @@ fn main() {
         .hostname(args.host)
         .port(args.port)
         .add_user(args.username, args.password)
-        .root_path(args.root_path)
+        .root_path(args.root_path.canonicalize().unwrap())
         .protect_root(args.prevent_traversal)
         .run()
         .unwrap();

@@ -9,10 +9,8 @@ impl FtpServer {
 
     pub fn set_current_dir(&self, pathname: &str) -> crate::Result<()> {
         if self.protect_root {
-            let current = env::current_dir()?.canonicalize()?;
             let target = PathBuf::from(pathname).canonicalize()?;
-            
-            if !target.starts_with(current) {
+            if !target.starts_with(&self.root_path.canonicalize()?) {
                 return Err(crate::Error::PermissionDenied);
             }
         }
