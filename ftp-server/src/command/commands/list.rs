@@ -1,8 +1,8 @@
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
-
-use crate::{client::FtpClient, command::{Execute, FtpCommandExec}};
-
+use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec}};
+use crate::response::{FtpResponse, SuccessResponse, PreliminaryReply, PermanentError};
 use std::io::Write;
+use std::fs;
 
 #[allow(unused)]
 pub struct CmdList {
@@ -17,7 +17,37 @@ impl FtpCommand for CmdList {
 
 impl Execute for CmdList {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
-        let _ = client.control().write_all(b"200 Command recognized\r\n");
+        check_auth!(client);
+
+        let mut data_stream = match client.data.take() {
+            Some(stream) => stream,
+            None => {
+                PermanentError::Generic {
+                    details: "Use PASV first.".to_string()
+                }.send(client.control())?;
+                return Ok(());
+            }
+        };
+
+        PreliminaryReply::AboutToOpenDataConnection.send(client.control())?;
+
+        let target_dir = self.pathname.clone().unwrap_or_else(|| ".".to_string());
+        
+        if let Ok(entries) = fs::read_dir(target_dir) {
+            for entry in entries.flatten() {
+                let metadata = entry.metadata()?;
+                let name = entry.file_name().into_string().unwrap_or_default();
+                let dir_flag = if metadata.is_dir() { "d" } else { "-" };
+                let size = metadata.len();
+                let line = format!("{}rw-r--r-- 1 ftp ftp {} Jan 01 00:00 {}\r\n", dir_flag, size, name);
+                let _ = data_stream.write_all(line.as_bytes());
+            }
+        }
+
+        drop(data_stream);
+
+        SuccessResponse::ClosingDataConnection.send(client.control())?;
+
         Ok(())
     }
 }
