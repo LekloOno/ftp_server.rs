@@ -6,6 +6,7 @@ use crate::command::FtpCommandExec;
 
 pub mod build;
 pub mod run;
+pub mod fs;
 
 pub struct FtpServer {
     pub hostname: String,

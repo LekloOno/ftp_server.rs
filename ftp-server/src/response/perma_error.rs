@@ -13,4 +13,6 @@ pub enum PermanentError {
     UnimplParameter { unimpl_param: String },
     #[ftp_res(code = 530, message = "Not logged in.")]
     NotLoggedIn,
+    #[ftp_res(code = 550, message = "Requested action not taken. File unavailable. {details}")]
+    FileUnavailable {details: String},
 }

@@ -43,6 +43,10 @@ impl<'a> FtpClient<'a> {
         }
     }
 
+    pub fn server(&self) -> &'a FtpServer {
+        &self.server
+    }
+
     pub fn control(&mut self) -> &mut TcpStream {
         &mut self.control
     }
