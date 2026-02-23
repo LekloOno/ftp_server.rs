@@ -42,9 +42,9 @@ pub enum SuccessResponse {
 #[macro_export]
 macro_rules! send_ok {
     ($ctrl:expr) => {
-        $control.write("200 Ok !")
+        SuccessResponse::Generic { details: "Ok !".to_string() }.send($ctrl)
     };
     ($ctrl:expr, $fmt:literal $(, $($arg:tt)*)?) => {
-        write!($ctrl, $fmt $(, $($arg)*)?)
+        SuccessResponse::Generic { details: format!($fmt $(, $($arg)*)?) }.send($ctrl)
     };
 }

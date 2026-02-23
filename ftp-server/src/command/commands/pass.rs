@@ -2,7 +2,6 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 
-use std::io::Write;
 use crate::response::{FtpResponse, SuccessResponse};
 
 #[allow(unused)]

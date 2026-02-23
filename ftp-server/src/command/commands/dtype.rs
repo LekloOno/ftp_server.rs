@@ -1,7 +1,6 @@
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
-use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, data::DataType, response::{FtpResponse, PermanentError, SuccessResponse}};
-use std::io::Write;
+use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, data::DataType, response::{FtpResponse, PermanentError, SuccessResponse}, send_ok};
 
 #[allow(unused)]
 pub struct CmdType {
@@ -24,11 +23,8 @@ impl Execute for CmdType {
         }
 
         client.data_type = self.data_type.clone();
-        SuccessResponse::Generic { 
-            details: format!("Type set to {}", type_str) 
-        }
-        .send(client.control())
-        .map_err(crate::Error::from)
+        send_ok!(client.control(), "Type set to {type_str}")
+            .map_err(crate::Error::from)
     }
 }
 
