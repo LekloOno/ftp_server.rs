@@ -1,6 +1,6 @@
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
-use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
+use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, response::PermanentError};
 
 use crate::response::FtpResponse;
 
@@ -17,7 +17,13 @@ impl FtpCommand for CmdUser {
 
 impl Execute for CmdUser {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
-        client.username = self.username.clone();        
+        if client.server().users.get(&self.username).is_none() {
+            PermanentError::NotLoggedIn { details: "User not found".to_string() }
+                .send(client.control())?;
+            return Ok(());
+        };
+        
+        client.username = self.username.clone();
         crate::response::IntermediateReply::UserNameOk.send(client.control())?;
         Ok(())
     }

@@ -6,7 +6,7 @@
 macro_rules! check_auth {
     ($client:expr) => {
         if !$client.authentified {
-            crate::response::perma_error::PermanentError::NotLoggedIn.send($client.control())?;
+            crate::response::perma_error::PermanentError::NotLoggedIn { details: String::new() }.send($client.control())?;
             return Ok(());
         }
     };
