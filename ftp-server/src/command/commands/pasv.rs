@@ -34,7 +34,7 @@ impl Execute for CmdPasv {
 
         let (data_stream, _) = listener.accept()?;
         
-        client.data = Some(data_stream);
+        client.set_data(data_stream);
 
         Ok(())
     }

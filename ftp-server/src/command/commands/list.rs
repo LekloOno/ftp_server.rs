@@ -19,17 +19,16 @@ impl Execute for CmdList {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
         check_auth!(client);
 
-        let mut data_stream = match client.data.take() {
-            Some(stream) => stream,
-            None => {
-                PermanentError::Generic {
+        let (ctrl_stream, data_stream) = client.streams();
+
+        let Some(data_stream) = data_stream else {
+            PermanentError::Generic {
                     details: "Use PASV first.".to_string()
-                }.send(client.control())?;
-                return Ok(());
-            }
+            }.send(client.control())?;
+            return Ok(());
         };
 
-        PreliminaryReply::AboutToOpenDataConnection.send(client.control())?;
+        PreliminaryReply::AboutToOpenDataConnection.send(ctrl_stream)?;
 
         let target_dir = self.pathname.clone().unwrap_or_else(|| ".".to_string());
         
@@ -43,9 +42,8 @@ impl Execute for CmdList {
                 let _ = data_stream.write_all(line.as_bytes());
             }
         }
-
-        drop(data_stream);
-
+        
+        client.drop_data();
         SuccessResponse::ClosingDataConnection.send(client.control())?;
 
         Ok(())

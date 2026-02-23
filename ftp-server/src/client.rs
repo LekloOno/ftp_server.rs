@@ -16,7 +16,7 @@ pub struct FtpClient {
     
     /// The data stream for this client. <br/>
     /// It might not always be opened, hence the use of [`Option`]
-    pub data: Option<TcpStream>,
+    data: Option<TcpStream>,
     
     /// The format of data to be transfered over the data stream.
     pub data_type: DataType,
@@ -46,5 +46,17 @@ impl FtpClient {
 
     pub fn data(&mut self) -> Option<&mut TcpStream> {
         self.data.as_mut()
+    }
+
+    pub fn set_data(&mut self, stream: TcpStream) {
+        self.data = Some(stream);
+    }
+
+    pub fn drop_data(&mut self) {
+        self.data = None;
+    }
+    
+    pub fn streams(&mut self) -> (&mut TcpStream, Option<&mut TcpStream>) {
+        (&mut self.control, self.data.as_mut())
     }
 }
