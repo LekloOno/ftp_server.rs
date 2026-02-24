@@ -23,6 +23,8 @@ pub enum SuccessResponse {
     FileDeleted,
     #[ftp_res(code = 250, message = "Directory removed successfully.")]
     DirectoryRemoved,
+    #[ftp_res(code = 215, message = "UNIX Type: L8")]
+    SystemType,
 }
 
 /// A quick helper to send a generic Ok response, with an optionnal custom message
