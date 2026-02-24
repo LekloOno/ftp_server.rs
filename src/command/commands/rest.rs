@@ -35,7 +35,7 @@ impl Execute for CmdRest {
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdRest {
     fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
-        let arg_str = tools::get_one_arg::<Self>(arg.clone())?;
+        let arg_str = tools::get_path_arg::<Self>(arg.clone())?;
         
         let offset = arg_str.parse::<u64>().map_err(|_| ftp_command_parser::Error::UnvalidCmdArg { arg, code: Self::name().to_string() })?;
         

@@ -64,6 +64,27 @@ pub fn get_one_arg_relaxed<T: FtpCommand>(arg: Option<String>) -> ftp_command_pa
     Ok(r_arg.to_string())
 }
 
+/// Checks if the provided arg option contains exactly one argument, and returns it.
+/// 
+/// The difference with [`get_one_arg`] is that this function allows separator chars within the argument, and does not require the argument to be separated from the command by a separator char.
+/// This is typically useful for commands that take a file path as argument, which can contain separator chars and can be provided right after the command without separator (e.g. `STORfile.txt`).
+/// 
+/// # Returns
+/// If it contains exactly one string argument (that might include separator chars), returns such argument.
+pub fn get_path_arg<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpParseError> {
+    let Some(arg_str) = arg else {
+        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
+    };
+    
+    let trimmed = arg_str.trim();
+    
+    if trimmed.is_empty() {
+        return Err(FtpParseError::UnvalidCmdArg { arg: Some(arg_str), code: T::name().to_string() });
+    }
+
+    Ok(trimmed.to_string())
+}
+
 /// A quick hand to simplify implementations of commands that require authentication.
 /// 
 /// It checks if the provided client is authentified, and if not, sends a `NotLoggedIn`
