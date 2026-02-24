@@ -1,3 +1,5 @@
+//! Defines the ftp-server command arguments
+ 
 use std::path::PathBuf;
 
 use clap::Parser;

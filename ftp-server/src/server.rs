@@ -1,3 +1,6 @@
+//! Provides an explicit structure and its implementations
+//! to handle FtpServer states, building and serving.
+
 use std::{collections::HashMap, path::PathBuf};
 
 use ftp_command_parser::parser::FtpCommandParser;

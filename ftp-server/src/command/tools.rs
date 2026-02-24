@@ -1,3 +1,6 @@
+//! Provides tools to handle common operation within commands
+//! and simplify their implementation process.
+
 use ftp_command_parser::{command::FtpCommand, parser::FtpParseError};
 
 /// Checks if the provided arg is empty.

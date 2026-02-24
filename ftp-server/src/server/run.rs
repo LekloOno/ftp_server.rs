@@ -1,6 +1,6 @@
+//! Provides methods to handle the main serving loop of the server.
+
 use std::{env, fs, net::TcpListener, thread};
-
-
 use crate::{client::FtpClient, server::FtpServer};
 
 impl FtpServer {

@@ -1,5 +1,7 @@
-use std::{env, path::PathBuf};
+//! Provides methods to handle interractions with the server's file system
+//! while complying to its policies.
 
+use std::{env, path::PathBuf};
 use crate::server::FtpServer;
 
 impl FtpServer {

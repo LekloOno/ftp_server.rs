@@ -1,9 +1,11 @@
+//! Defines the interface of an executable command for an [`crate::client::FtpClient`]
+//! and provides concrete implementations of such.
+
 use ftp_command_parser::command::{FtpCommand, FtpCommandDyn};
 
 use crate::client::FtpClient;
 
 pub(self) mod tools;
-
 pub mod commands;
 
 /// # Notes

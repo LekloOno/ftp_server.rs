@@ -1,3 +1,4 @@
+//! Provides an explicit enum definition for FTP data transfer types.
 use strum_macros::{Display, EnumString};
 
 /// Represents effective data transfer types.

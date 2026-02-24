@@ -1,7 +1,7 @@
+//! Provides methods to configure a server in a Builder pattern. 
+ 
 use std::{collections::HashMap, path::PathBuf};
-
 use ftp_command_parser::{command::BuildableFtpCommand, parser::FtpCommandParser};
-
 use crate::{command::FtpCommandExec, server::FtpServer};
 
 impl FtpServer {

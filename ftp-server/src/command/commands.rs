@@ -1,3 +1,6 @@
+//! Defines executable, bindable and parseable independant commands
+//! implementations for an [`crate::client::FtpClient`].
+
 pub mod user;
 pub mod pass;
 pub mod pwd;

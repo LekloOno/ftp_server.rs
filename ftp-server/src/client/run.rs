@@ -1,3 +1,5 @@
+//! Provides methods to handle the main client listening loop of the server.
+
 use crate::{client::FtpClient, response::{FtpResponse, SuccessResponse}};
 
 impl<'a> FtpClient<'a> {

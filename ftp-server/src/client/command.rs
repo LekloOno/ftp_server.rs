@@ -1,3 +1,4 @@
+//! Provides methods to handle commands receipt of an [`FtpClient`].
 use std::io::BufRead;
 
 use crate::{client::FtpClient, response::*};

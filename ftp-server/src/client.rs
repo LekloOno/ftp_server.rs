@@ -1,9 +1,13 @@
+//! Provides an explicit structure and its implementations
+//! to handle the server-side model of an FtpClient.
+
 use std::io::BufReader;
 use std::net::TcpStream;
 
-use crate::data::DataType;
+use data::DataType;
 use crate::server::FtpServer;
 
+pub mod data;
 pub mod command;
 pub mod run;
 
@@ -62,6 +66,13 @@ impl<'a> FtpClient<'a> {
         self.data = None;
     }
     
+    /// Retrieves both control and (option) data stream simultaneously.
+    /// 
+    /// This should be used when both are required in the same scope to comply with borrow rules.
+    /// 
+    /// Trying to access them through [`Self::control`] then [`Self::data`] in sequence as such a
+    /// `control` borrow should remain alive when `data` is borrowed would imply two simultaneous
+    /// mutable borrows of `self`. This is obviously not possible.
     pub fn streams(&mut self) -> (&mut TcpStream, Option<&mut TcpStream>) {
         (&mut self.control, self.data.as_mut())
     }
