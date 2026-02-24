@@ -4,6 +4,8 @@ use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, respon
 
 use crate::response::{FtpResponse, SuccessResponse};
 
+use sha2::{Sha256, Digest};
+
 /// The `PASS` command, which provides the password for the user attempting to log in.
 /// 
 /// # Usage
@@ -34,10 +36,16 @@ impl Execute for CmdPass {
             return Ok(());
         };
 
-        if let Some(pswd) = pswd_opt && pswd != &self.password {
-            PermanentError::NotLoggedIn { details: "Incorrect Password".to_string() }
-                .send(client.control())?;
-            return Ok(());
+        if let Some(pswd) = pswd_opt {
+            let mut hasher = Sha256::new();
+            hasher.update(&self.password);
+            let input_hash = format!("{:x}", hasher.finalize());
+
+            if pswd != &input_hash {
+                PermanentError::NotLoggedIn { details: "Incorrect Password".to_string() }
+                    .send(client.control())?;
+                return Ok(());
+            }
         }
 
         client.authentified = true;

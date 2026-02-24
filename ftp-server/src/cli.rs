@@ -30,5 +30,9 @@ pub struct Cli {
     /// Sets the initial root directory to serve
     #[arg(default_value = ".")]
     pub root_path: PathBuf,
+
+    // Optional path to a file containing user credentials in the format "username:password_hash" (one per line). If provided, these credentials will be used instead of the command-line username and password.
+    #[arg(short='U', long)]
+    pub users_file: Option<PathBuf>,
 }
 

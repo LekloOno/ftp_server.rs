@@ -10,3 +10,4 @@ thiserror = "2.0.18"
 ftp_response_impl = { path = "../ftp_response_impl" }
 strum = "0.27.2"
 strum_macros = "0.27.2"
+sha2 = "0.10.9"

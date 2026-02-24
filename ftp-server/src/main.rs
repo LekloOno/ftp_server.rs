@@ -36,6 +36,7 @@ fn main() {
         .hostname(args.host)
         .port(args.port)
         .add_user(args.username, args.password)
+        .load_users_from_file(args.users_file)
         .root_path(args.root_path.canonicalize().unwrap())
         .protect_root(!args.allow_traversal)
         .run()
