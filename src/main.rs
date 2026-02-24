@@ -37,8 +37,9 @@ fn main() {
         .port(args.port)
         .add_user(args.username, args.password)
         .load_users_from_file(args.users_file)
-        .root_path(args.root_path.canonicalize().unwrap())
+        .root_path(args.root_path)
         .protect_root(!args.allow_traversal)
+        .prepare().unwrap()
         .run()
         .unwrap();
 }
