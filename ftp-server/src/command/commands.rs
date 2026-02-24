@@ -8,3 +8,4 @@ pub mod list;
 pub mod quit;
 pub mod dtype;
 pub mod retr;
+pub mod stor;
