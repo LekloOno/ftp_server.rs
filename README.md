@@ -38,9 +38,11 @@ The project includes all the main requested features:
 - Delete, create and rename resources.
 
 And some additionnal features:
-- User hashed authentification with user configuration file (see command options `-U`).
+- User hashed authentification with user configuration file (see command options `-U`).*
 - Active and passive mode.
 - REST and SYST commands.
+
+*These users are purely authentication keys, and are not used for specific server permissions, but they could be later extended to do so !
 
 All these have been tested using filezilla.
 
