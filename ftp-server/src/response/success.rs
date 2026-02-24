@@ -21,6 +21,8 @@ pub enum SuccessResponse {
     ClosingDataConnection,
     #[ftp_res(code = 250, message = "File deleted successfully.")]
     FileDeleted,
+    #[ftp_res(code = 250, message = "Directory removed successfully.")]
+    DirectoryRemoved,
 }
 
 /// A quick helper to send a generic Ok response, with an optionnal custom message

@@ -11,3 +11,4 @@ pub mod retr;
 pub mod stor;
 pub mod dele;
 pub mod mkd;
+pub mod rmd;
