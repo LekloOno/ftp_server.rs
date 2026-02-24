@@ -3,7 +3,7 @@
 use std::fs::OpenOptions;
 use std::io::{copy, Seek, SeekFrom};
 
-use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
+use ftp_command_parser::command::{BuildableFtpCommand, FtpCommand};
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PreliminaryReply, PermanentError};
 
@@ -80,7 +80,7 @@ impl Execute for CmdStor {
 }
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdStor {
-    fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
+    fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
         Ok(Box::new(CmdStor { pathname: tools::get_one_arg_relaxed::<Self>(arg)? }))
     }
 }

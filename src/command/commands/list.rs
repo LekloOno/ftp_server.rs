@@ -1,6 +1,6 @@
 //! The `LIST` command, which lists the files and directories in the specified path on the server.
 
-use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
+use ftp_command_parser::command::{BuildableFtpCommand, FtpCommand};
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec}};
 use crate::response::{FtpResponse, SuccessResponse, PreliminaryReply, PermanentError};
 use std::io::Write;
@@ -65,7 +65,7 @@ impl Execute for CmdList {
 }
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdList {
-    fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
+    fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
         let Some(arg_str) = &arg else {
             return Ok(Box::new(CmdList {pathname: None}));
         };
@@ -77,7 +77,7 @@ impl BuildableFtpCommand<dyn FtpCommandExec> for CmdList {
         let pathname = match args.len() {
             0 => None,
             1 => Some(args[0].to_string()),
-            _ => Err(FtpParseError::UnvalidCmdArg { arg, code: Self::name().to_string() })?,
+            _ => Err(ftp_command_parser::Error::UnvalidCmdArg { arg, code: Self::name().to_string() })?,
         };
 
         Ok(Box::new(CmdList {pathname}))

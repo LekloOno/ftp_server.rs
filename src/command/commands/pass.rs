@@ -1,6 +1,6 @@
 //! The `PASS` command, which provides the password for the user attempting to log in.
 
-use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
+use ftp_command_parser::command::{BuildableFtpCommand, FtpCommand};
 
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, response::PermanentError};
 
@@ -57,7 +57,7 @@ impl Execute for CmdPass {
 }
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdPass {
-    fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
+    fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
         Ok(Box::new(CmdPass { password: tools::get_one_arg::<Self>(arg)? }))
     }
 }

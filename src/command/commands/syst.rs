@@ -1,6 +1,6 @@
 //! The `SYST` command, which returns the type of operating system the server is running on.
 
-use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
+use ftp_command_parser::command::{BuildableFtpCommand, FtpCommand};
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse};
 
@@ -29,7 +29,7 @@ impl Execute for CmdSyst {
 }
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdSyst {
-    fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
+    fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
         tools::get_no_args::<Self>(arg)?;
         Ok(Box::new(CmdSyst {}))
     }

@@ -1,6 +1,6 @@
 //! The `TYPE` command, which sets the data type for file transfers between the client and server.
 
-use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
+use ftp_command_parser::command::{BuildableFtpCommand, FtpCommand};
 
 use crate::{client::{FtpClient, data::DataType}, command::{Execute, FtpCommandExec, tools}, response::{FtpResponse, PermanentError, SuccessResponse}, send_ok};
 
@@ -41,11 +41,11 @@ impl Execute for CmdType {
 }
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdType {
-    fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
+    fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
         let arg_str = tools::get_one_arg::<Self>(arg)?;
 
         let data_type = DataType::try_from(arg_str.as_str())
-            .map_err(|_| FtpParseError::UnvalidCmdArg {
+            .map_err(|_| ftp_command_parser::Error::UnvalidCmdArg {
                 arg: Some(arg_str),
                 code: Self::name().to_string()
             })?;

@@ -1,7 +1,4 @@
-use crate::{
-    parser::FtpParseError,
-    command::{BuildableFtpCommand, FtpCommand}
-};
+use crate::command::{BuildableFtpCommand, FtpCommand};
 
 pub struct DummyFtpCommand {
     arg: Option<String>,
@@ -14,7 +11,7 @@ impl FtpCommand for DummyFtpCommand {
 }
 
 impl BuildableFtpCommand<dyn DisplayableFtpCommand> for DummyFtpCommand {
-    fn build(arg: Option<String>) -> Result<Box<dyn DisplayableFtpCommand>, FtpParseError> {
+    fn build(arg: Option<String>) -> crate::Result<Box<dyn DisplayableFtpCommand>> {
         Ok(Box::new(Self { arg }))
     }
 }

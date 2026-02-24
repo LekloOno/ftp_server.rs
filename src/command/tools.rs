@@ -1,7 +1,7 @@
 //! Provides tools to handle common operation within commands
 //! and simplify their implementation process.
 
-use ftp_command_parser::{command::FtpCommand, parser::FtpParseError};
+use ftp_command_parser::command::FtpCommand;
 
 /// Checks if the provided arg is empty.
 /// Use it to propagate the error otherwise.
@@ -9,7 +9,7 @@ use ftp_command_parser::{command::FtpCommand, parser::FtpParseError};
 /// # Note
 /// The function consumes the argument, as such argument contains 
 /// no information anyway if it does not produce an error.
-pub fn get_no_args<T: FtpCommand>(arg: Option<String>) -> Result<(), FtpParseError> {
+pub fn get_no_args<T: FtpCommand>(arg: Option<String>) -> ftp_command_parser::Result<()> {
     let Some(arg_str) = &arg else {
         return Ok(());
     };
@@ -18,7 +18,7 @@ pub fn get_no_args<T: FtpCommand>(arg: Option<String>) -> Result<(), FtpParseErr
         return Ok(());
     }
 
-    Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() })
+    Err(ftp_command_parser::Error::UnvalidCmdArg { arg, code: T::name().to_string() })
 }
 
 /// Checks if the provided arg option contains exactly one argument.
@@ -26,9 +26,9 @@ pub fn get_no_args<T: FtpCommand>(arg: Option<String>) -> Result<(), FtpParseErr
 /// 
 /// # Returns
 /// If it contains exactly one string argument, returns such argument.
-pub fn get_one_arg<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpParseError> {
+pub fn get_one_arg<T: FtpCommand>(arg: Option<String>) -> ftp_command_parser::Result<String> {
     let Some(arg_str) = &arg else {
-        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
+        return Err(ftp_command_parser::Error::UnvalidCmdArg { arg, code: T::name().to_string() });
     };
     
     // We could be smarter and iterate then stop once we have more than one args
@@ -36,7 +36,7 @@ pub fn get_one_arg<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpPars
     let args = arg_str.split_whitespace().collect::<Vec<&str>>();
 
     if args.len() != 1 {
-        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
+        return Err(ftp_command_parser::Error::UnvalidCmdArg { arg, code: T::name().to_string() });
     }
 
     Ok(args[0].to_string())
@@ -52,13 +52,13 @@ pub fn get_one_arg<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpPars
 /// 
 /// # Returns
 /// If it contains exactly one string argument (that might include separator chars), returns such argument.
-pub fn get_one_arg_relaxed<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpParseError> {
+pub fn get_one_arg_relaxed<T: FtpCommand>(arg: Option<String>) -> ftp_command_parser::Result<String> {
     let Some(arg_str) = &arg else {
-        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
+        return Err(ftp_command_parser::Error::UnvalidCmdArg { arg, code: T::name().to_string() });
     };
     
     let Some((_, r_arg)) = arg_str.split_once(char::is_whitespace) else {
-        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
+        return Err(ftp_command_parser::Error::UnvalidCmdArg { arg, code: T::name().to_string() });
     };
 
     Ok(r_arg.to_string())

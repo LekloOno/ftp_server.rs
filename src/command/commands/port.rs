@@ -1,7 +1,7 @@
 //! The `PORT` command, which allows the client to specify an IP address and port for the server to connect to for data transfer.
 
 use std::net::{Ipv4Addr, SocketAddrV4, TcpStream};
-use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
+use ftp_command_parser::command::{BuildableFtpCommand, FtpCommand};
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PermanentError};
 
@@ -54,16 +54,16 @@ impl Execute for CmdPort {
 }
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdPort {
-    fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
+    fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
         let arg_str = tools::get_one_arg::<Self>(arg.clone())?;
         
         let parts: Vec<&str> = arg_str.split(',').collect();
         if parts.len() != 6 {
-            return Err(FtpParseError::UnvalidCmdArg { arg, code: Self::name().to_string() });
+            return Err(ftp_command_parser::Error::UnvalidCmdArg { arg, code: Self::name().to_string() });
         }
 
         let nums: Result<Vec<u8>, _> = parts.iter().map(|s| s.parse::<u8>()).collect();
-        let nums = nums.map_err(|_| FtpParseError::UnvalidCmdArg { arg: arg.clone(), code: Self::name().to_string() })?;
+        let nums = nums.map_err(|_| ftp_command_parser::Error::UnvalidCmdArg { arg: arg.clone(), code: Self::name().to_string() })?;
 
         let ip = Ipv4Addr::new(nums[0], nums[1], nums[2], nums[3]);
         let port = (nums[4] as u16 * 256) + nums[5] as u16;

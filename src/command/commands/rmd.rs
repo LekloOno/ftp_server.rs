@@ -2,7 +2,7 @@
 
 use std::fs;
 
-use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
+use ftp_command_parser::command::{BuildableFtpCommand, FtpCommand};
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PermanentError};
 
@@ -48,7 +48,7 @@ impl Execute for CmdRmd {
 }
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdRmd {
-    fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
+    fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
         Ok(Box::new(CmdRmd { pathname: tools::get_one_arg::<Self>(arg)? }))
     }
 }

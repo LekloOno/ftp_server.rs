@@ -1,10 +1,11 @@
 use ftp_command_parser::{
-    parser::{FtpCommandParser, FtpParseError},
+    Result,
+    parser::FtpCommandParser,
     command::FtpCommand,
     dummy_impl::{DisplayableFtpCommand, DummyFtpCommand}
 };
 
-pub fn main() -> Result<(), FtpParseError> {
+pub fn main() -> Result<()> {
     let mut command_parser = FtpCommandParser::<dyn DisplayableFtpCommand>::new();
     command_parser.register::<DummyFtpCommand>();
 

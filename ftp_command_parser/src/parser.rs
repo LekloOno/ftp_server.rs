@@ -1,7 +1,4 @@
 use std::collections::HashMap;
-
-use thiserror::Error;
-
 use crate::command::{BuildableFtpCommand, FtpCommand};
 
 pub struct FtpCommandParser<T: FtpCommand + ?Sized + 'static> {
@@ -9,11 +6,11 @@ pub struct FtpCommandParser<T: FtpCommand + ?Sized + 'static> {
 }
 
 pub struct FtpCommandBuilder<T: FtpCommand + ?Sized + 'static> {
-    constructor: Box<dyn Fn(Option<String>) -> Result<Box<T>, FtpParseError> + Send + Sync>,
+    constructor: Box<dyn Fn(Option<String>) -> crate::Result<Box<T>> + Send + Sync>,
 }
 
 impl<T: FtpCommand + ?Sized> FtpCommandBuilder<T> {
-    pub fn build(&self, arg: Option<String>) -> Result<Box<T>, FtpParseError> {
+    pub fn build(&self, arg: Option<String>) -> crate::Result<Box<T>> {
         (*self.constructor)(arg)
     }
 }
@@ -30,21 +27,9 @@ impl<T: FtpCommand + ?Sized> FtpCommandParser<T> {
         );
     }
 
-    pub fn get(&self, code: &str) -> Result<&FtpCommandBuilder<T>, FtpParseError> {
+    pub fn get(&self, code: &str) -> crate::Result<&FtpCommandBuilder<T>> {
         self.commands
             .get(code)
-            .ok_or_else(|| FtpParseError::CmdNameNotFound { code: code.to_string() })
+            .ok_or_else(|| crate::Error::CmdNameNotFound { code: code.to_string() })
     }
-}
-
-#[derive(Error, Debug)]
-pub enum FtpParseError {
-    #[error("'{code}' is not a registered command code")]
-    CmdNameNotFound {code: String},
-    #[error("'{}' argument is invalid for command code '{code}'",
-        match arg {
-            Some(content) => content,
-            None => "empty",
-        })]
-    UnvalidCmdArg {arg: Option<String>, code: String},
 }

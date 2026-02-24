@@ -1,6 +1,6 @@
 //! The `USER` command, which initiates the login process by providing the username of the user attempting to log in.
 
-use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
+use ftp_command_parser::command::{BuildableFtpCommand, FtpCommand};
 
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, response::PermanentError};
 
@@ -42,7 +42,7 @@ impl Execute for CmdUser {
 }
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdUser {
-    fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
+    fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
         Ok(Box::new(CmdUser { username: tools::get_one_arg::<Self>(arg)? }))
     }
 }

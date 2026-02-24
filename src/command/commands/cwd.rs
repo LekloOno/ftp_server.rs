@@ -1,6 +1,6 @@
 //! The `CDUP` command, which changes the current directory to the parent directory.
 
-use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
+use ftp_command_parser::command::{BuildableFtpCommand, FtpCommand};
 
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 
@@ -52,7 +52,7 @@ impl Execute for CmdCwd {
 }
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdCwd {
-    fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
+    fn build(arg: Option<String>) -> ftp_command_parser::Result<Box<dyn FtpCommandExec>> {
         Ok(Box::new(CmdCwd { pathname: tools::get_one_arg::<Self>(arg)? }))
     }
 }
