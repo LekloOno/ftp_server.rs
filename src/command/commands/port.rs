@@ -3,6 +3,19 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PermanentError};
 
+/// Implements the PORT command, which allows the client to specify an IP address and port for the server to connect to for data transfer.
+///
+/// # Usage
+/// ```rs
+/// // To specify the client's IP and port for data transfer:
+/// client.send_command("PORT h1,h2,h3,h4,p1,p2");
+/// // Where h1-h4 are the octets of the client's IP address and p1, p2 are the high and low bytes of the port number (port = p1*256 + p2).
+/// // For example, if the client's IP is 192.168.1.1 and the port is 21, the command would be:
+/// // client.send_command("PORT 192,168,1,1,0,21");
+/// // The server will respond with "200 PORT command successful" if the connection is established successfully.
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // If the server fails to connect to the client's specified address and port, it will respond with "425 Can't open data connection."
+/// ```
 #[allow(unused)]
 pub struct CmdPort {
     ip: Ipv4Addr,

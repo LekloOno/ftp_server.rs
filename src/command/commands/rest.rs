@@ -2,6 +2,16 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, IntermediateReply};
 
+/// The `REST` command, which allows the client to specify a byte offset for resuming file transfers.
+/// 
+/// # Usage
+/// ```rs
+/// // To specify a byte offset for resuming a file transfer:
+/// client.send_command("REST 1024");
+/// // This indicates that the client wants to resume the transfer from byte offset 1024.
+/// // The server will respond with "350 Restarting at 1024. Send STORE or RETRIEVE to initiate transfer" if the offset is accepted.
+/// // If the client provides an invalid offset (e.g., non-numeric), the server will respond with "501 Syntax error in parameters or arguments."
+/// ```
 #[allow(unused)]
 pub struct CmdRest {
     offset: u64,
