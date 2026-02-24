@@ -1,3 +1,5 @@
+//! Defines the errors a parsing operation might rise.
+
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, Error>;

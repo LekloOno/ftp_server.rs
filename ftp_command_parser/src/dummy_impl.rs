@@ -1,3 +1,10 @@
+//! An dummy implementation to showcase a concrete use of the parser
+//! and its extensivity.
+//! 
+//! It shows that you could notably easily define a parser specialized
+//! for displayable commands, that is a blanket implementation of any
+//! structure that both implements [`std::fmt::Display`] and [`FtpCommand`].
+
 use crate::command::{BuildableFtpCommand, FtpCommand};
 
 pub struct DummyFtpCommand {

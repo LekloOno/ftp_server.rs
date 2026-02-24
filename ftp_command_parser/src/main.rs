@@ -1,3 +1,4 @@
+//! A simple program showcasing the use of the parser with [`ftp_command_parser::dummy_impl`].
 use ftp_command_parser::{
     Result,
     parser::FtpCommandParser,

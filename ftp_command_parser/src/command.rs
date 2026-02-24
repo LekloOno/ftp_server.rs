@@ -1,3 +1,7 @@
+//! The fundamental traits to define commands that can be built
+//! by a parser.
+
+/// Identifies a command via a string name code.
 pub trait FtpCommand {
     fn name() -> &'static str where Self: Sized;
 }
@@ -17,6 +21,8 @@ impl<T: FtpCommand> FtpCommandDyn for T {
     }
 }
 
+/// Specifies how the implementing command should be built for the
+/// target dynamic type `T`.
 pub trait BuildableFtpCommand<T: FtpCommand + ?Sized>: FtpCommand {
     fn build(arg: Option<String>) -> crate::Result<Box<T>>;
 }
