@@ -4,6 +4,18 @@ use crate::response::{FtpResponse, SuccessResponse, PreliminaryReply, PermanentE
 use std::io::Write;
 use std::fs;
 
+/// The `LIST` command, which lists the files and directories in the specified path on the server.
+/// If no path is specified, it lists the contents of the current directory.
+/// 
+/// # Usage
+/// ```rs
+/// // To list the contents of the current directory
+/// client.send_command("LIST");
+/// // The server will respond with a list of files and directories in the current directory, followed by "226 Closing data connection. Requested file action successful."
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // If the client fails to establish a data connection (e.g., by not using PASV), the server will respond with "425 Can't open data connection."
+/// // If the specified path does not exist or is not a directory, the server will respond with "550 Failed to list directory."
+/// ```
 #[allow(unused)]
 pub struct CmdList {
     pathname: Option<String>,

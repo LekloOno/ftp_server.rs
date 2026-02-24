@@ -2,7 +2,17 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PermanentError};
 
-
+/// The `CDUP` command, which changes the current directory to the parent directory.
+///
+/// # Usage
+/// ```rs
+/// // Assuming the current directory is "/home/user"
+/// client.send_command("CDUP");
+/// // The server will attempt to change the current directory to "/home"
+/// // If successful, the server will respond with "250 Requested file action okay, completed."
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // If the server fails to change the directory (e.g., due to permissions), it will respond with "550 Failed to change directory to parent."
+/// ```
 #[allow(unused)]
 pub struct CmdCdup {}
 

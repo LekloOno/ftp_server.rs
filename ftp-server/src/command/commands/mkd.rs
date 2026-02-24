@@ -5,6 +5,17 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PermanentError};
 
+/// The `MKD` command, which creates a new directory on the server with the specified pathname.
+/// 
+/// # Usage
+/// ```rs
+/// // To create a new directory named "new_folder" in the current directory
+/// client.send_command("MKD new_folder");
+/// // The server will attempt to create the directory "/current/directory/new_folder"
+/// // If successful, the server will respond with "257 "/current/directory/new_folder" Directory created."
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // If the server fails to create the directory (e.g., due to permissions or if the directory already exists), it will respond with "550 Failed to create directory."
+/// ```
 #[allow(unused)]
 pub struct CmdMkd {
     pathname: String,

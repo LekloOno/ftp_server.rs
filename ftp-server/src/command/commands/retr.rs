@@ -5,6 +5,18 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PreliminaryReply, PermanentError};
 
+/// The `RETR` command, which retrieves a file from the server and sends it to the client over a data connection.
+/// 
+/// # Usage
+/// ```rs
+/// // Assuming the current directory is "/home/user" and contains a file named "file.txt"
+/// client.send_command("RETR file.txt");
+/// // The server will attempt to retrieve the file "/home/user/file.txt"
+/// // If successful, the server will respond with "150 File status okay; about to open data connection." and then send the file contents over the data connection, followed by "226 Closing data connection. Requested file action successful."
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // If the server fails to retrieve the file (e.g., due to permissions or non-existence), it will respond with "550 Failed to retrieve file."
+/// // If the client has not established a data connection (e.g., by using PASV), the server will respond with "425 Can't open data connection."
+/// ```
 #[allow(unused)]
 pub struct CmdRetr {
     pathname: String,

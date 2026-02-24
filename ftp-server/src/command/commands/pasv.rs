@@ -3,6 +3,17 @@ use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, to
 use crate::response::{FtpResponse, SuccessResponse};
 use std::net::TcpListener;
 
+
+/// The `PASV` command, which puts the server into passive mode for data transfer.
+/// 
+/// # Usage
+/// ```rs
+/// // To enter passive mode for data transfer
+/// client.send_command("PASV");
+/// // The server will respond with "227 Entering Passive Mode (h1,h2,h3,h4,p1,p2)" where h1-h4 represent the server's IP address and p1-p2 represent the port number for the data connection.
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // After receiving the PASV response, the client should establish a data connection to the specified IP and port for subsequent data transfer commands (e.g., RETR, STOR).
+/// ```
 pub struct CmdPasv {}
 
 impl FtpCommand for CmdPasv {

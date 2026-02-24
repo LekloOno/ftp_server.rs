@@ -4,6 +4,17 @@ use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 
 use crate::response::{FtpResponse, SuccessResponse, PermanentError};
 
+/// The `CWD` command, which changes the current working directory on the server to the specified path.
+/// 
+/// # Usage
+/// ```rs
+/// // Assuming the current directory is "/home/user"
+/// client.send_command("CWD /home/user/documents");
+/// // The server will attempt to change the current directory to "/home/user/documents"
+/// // If successful, the server will respond with "250 Requested file action okay, completed."
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // If the server fails to change the directory (e.g., due to permissions or non-existence), it will respond with "550 Failed to change directory."
+/// ```
 #[allow(unused)]
 pub struct CmdCwd {
     pathname: String,

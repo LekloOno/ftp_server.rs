@@ -4,6 +4,17 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PermanentError};
 
+/// The `DELE` command, which deletes the specified file from the server.
+/// 
+/// # Usage
+/// ```rs
+/// // Assuming the current directory is "/home/user" and contains a file named "file.txt"
+/// client.send_command("DELE file.txt");
+/// // The server will attempt to delete the file "/home/user/file.txt"
+/// // If successful, the server will respond with "250 File deleted successfully."
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // If the server fails to delete the file (e.g., due to permissions or non-existence), it will respond with "550 Failed to delete file."
+/// ```
 #[allow(unused)]
 pub struct CmdDele {
     pathname: String,

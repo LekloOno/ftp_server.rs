@@ -2,6 +2,16 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, data::DataType, response::{FtpResponse, PermanentError, SuccessResponse}, send_ok};
 
+/// The `TYPE` command, which sets the data type for file transfers between the client and server.
+/// 
+/// # Usage
+/// ```rs
+/// // To set the data type to ASCII
+/// client.send_command("TYPE A");
+/// // The server will respond with "200 Type set to ASCII" if successful.
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // If the client specifies an unsupported data type (e.g., EBCDIC), the server will respond with "504 Command not implemented for that parameter."
+/// ```
 #[allow(unused)]
 pub struct CmdType {
     data_type: DataType,

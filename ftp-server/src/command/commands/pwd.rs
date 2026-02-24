@@ -2,6 +2,15 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}, response::{FtpResponse, SuccessResponse}};
 
+/// The `PWD` command, which returns the current working directory of the client on the server.
+/// 
+/// # Usage
+/// ```rs
+/// // Assuming the current directory is "/home/user"
+/// client.send_command("PWD");
+/// // The server will respond with "257 "/home/user" is the current directory" if successful.
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// ```
 #[allow(unused)]
 pub struct CmdPwd {}
 

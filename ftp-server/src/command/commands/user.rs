@@ -4,6 +4,16 @@ use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, respon
 
 use crate::response::FtpResponse;
 
+/// The `USER` command, which initiates the login process by providing the username of the user attempting to log in.
+/// 
+/// # Usage
+/// ```rs
+/// // To log in as a user named "test_user"
+/// client.send_command("USER test_user");
+/// // The server will check if the user "test_user" exists
+/// // If the user exists, the server will respond with "331 User name okay, need password."
+/// // If the user does not exist, the server will respond with "530 Not logged in."
+/// ```
 #[allow(unused)]
 pub struct CmdUser {
     username: String,

@@ -5,6 +5,18 @@ use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::Ftp
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PreliminaryReply, PermanentError};
 
+/// The `STOR` command, which stores a file sent by the client on the server at the specified pathname.
+/// 
+/// # Usage
+/// ```rs
+/// // Assuming the current directory is "/home/user" and the client wants to upload a file named "upload.txt"
+/// client.send_command("STOR upload.txt");
+/// // The server will attempt to create the file "/home/user/upload.txt" and write the contents sent by the client over the data connection into it.
+/// // If successful, the server will respond with "150 File status okay; about to open data connection." and then receive the file contents over the data connection, followed by "226 Closing data connection. Requested file action successful."
+/// // If the client is not authenticated, the server will respond with "530 Not logged in."
+/// // If the server fails to create the file (e.g., due to permissions), it will respond with "550 Failed to create file."
+/// // If the client has not established a data connection (e.g., by using PASV), the server will respond with "425 Can't open data connection."
+/// ```
 #[allow(unused)]
 pub struct CmdStor {
     pathname: String,

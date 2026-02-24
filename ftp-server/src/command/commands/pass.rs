@@ -4,6 +4,17 @@ use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, respon
 
 use crate::response::{FtpResponse, SuccessResponse};
 
+/// The `PASS` command, which provides the password for the user attempting to log in.
+/// 
+/// # Usage
+/// ```rs
+/// // To log in as a user named "test_user" with password "test_password"
+/// client.send_command("USER test_user");
+/// client.send_command("PASS test_password");
+/// // The server will check if the password is correct for the user "test_user"
+/// // If correct, the server will respond with "230 User logged in."
+/// // If incorrect, the server will respond with "530 Not logged in."
+/// ```
 #[allow(unused)]
 pub struct CmdPass {
     password: String,

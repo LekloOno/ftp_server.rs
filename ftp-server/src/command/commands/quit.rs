@@ -4,6 +4,15 @@ use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 
 use std::io::Write;
 
+/// The `QUIT` command, which terminates the FTP session between the client and server.
+/// 
+/// # Usage
+/// ```rs
+/// // To terminate the FTP session
+/// client.send_command("QUIT");
+/// // The server will respond with "221 Goodbye" and close the connection if successful.
+/// // If the client is not authenticated, the server will still respond with "221 Goodbye" and close the connection, as the QUIT command is valid regardless of authentication status.
+/// ```
 #[allow(unused)]
 pub struct CmdQuit {}
 
@@ -15,7 +24,7 @@ impl FtpCommand for CmdQuit {
 
 impl Execute for CmdQuit {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
-        let _ = client.control().write_all(b"200 Command recognized\r\n");
+        let _ = client.control().write_all(b"221 Goodbye\r\n");
         Err(crate::Error::Quit)
     }
 }
