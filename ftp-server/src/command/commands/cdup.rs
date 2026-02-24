@@ -1,8 +1,7 @@
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
-
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
+use crate::response::{FtpResponse, SuccessResponse, PermanentError};
 
-use std::io::Write;
 
 #[allow(unused)]
 pub struct CmdCdup {}
@@ -15,7 +14,22 @@ impl FtpCommand for CmdCdup {
 
 impl Execute for CmdCdup {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
-        let _ = client.control().write_all(b"200 Command recognized\r\n");
+        crate::check_auth!(client);
+
+        if let Err(err) = client.server().set_current_dir("..") {
+            match err {
+                crate::Error::PermissionDenied =>
+                    PermanentError::FileUnavailable {
+                        details: "Permission denied".to_string()
+                    },
+                _ => 
+                    PermanentError::Generic {
+                        details: "Failed to change directory to parent".to_string()
+                    },
+            }.send(client.control())?;
+        } else {
+            SuccessResponse::DirectoryChanged.send(client.control())?;
+        }
         Ok(())
     }
 }
