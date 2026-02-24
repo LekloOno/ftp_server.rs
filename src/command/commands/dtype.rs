@@ -1,3 +1,5 @@
+//! The `TYPE` command, which sets the data type for file transfers between the client and server.
+
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
 use crate::{client::{FtpClient, data::DataType}, command::{Execute, FtpCommandExec, tools}, response::{FtpResponse, PermanentError, SuccessResponse}, send_ok};

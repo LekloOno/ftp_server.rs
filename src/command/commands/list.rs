@@ -1,3 +1,5 @@
+//! The `LIST` command, which lists the files and directories in the specified path on the server.
+
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec}};
 use crate::response::{FtpResponse, SuccessResponse, PreliminaryReply, PermanentError};

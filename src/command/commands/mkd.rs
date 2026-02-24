@@ -1,3 +1,5 @@
+//! The `MKD` command, which creates a new directory on the server with the specified pathname.
+
 use std::fs;
 use std::path::PathBuf;
 

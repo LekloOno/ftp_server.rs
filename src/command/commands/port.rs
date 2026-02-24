@@ -1,3 +1,5 @@
+//! The `PORT` command, which allows the client to specify an IP address and port for the server to connect to for data transfer.
+
 use std::net::{Ipv4Addr, SocketAddrV4, TcpStream};
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};

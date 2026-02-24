@@ -1,3 +1,5 @@
+//! The `SYST` command, which returns the type of operating system the server is running on.
+
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse};

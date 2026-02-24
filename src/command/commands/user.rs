@@ -1,3 +1,5 @@
+//! The `USER` command, which initiates the login process by providing the username of the user attempting to log in.
+
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}, response::PermanentError};

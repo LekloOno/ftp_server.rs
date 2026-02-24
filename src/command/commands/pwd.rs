@@ -1,3 +1,5 @@
+//! The `PWD` command, which returns the current working directory of the client on the server.
+
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}, response::{FtpResponse, SuccessResponse}};

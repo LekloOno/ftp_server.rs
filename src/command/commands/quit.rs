@@ -1,3 +1,5 @@
+//! The `QUIT` command, which terminates the FTP session between the client and server.
+
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};

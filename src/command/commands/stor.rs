@@ -1,3 +1,5 @@
+//! The `STOR` command, which stores a file sent by the client on the server at the specified pathname.
+
 use std::fs::OpenOptions;
 use std::io::{copy, Seek, SeekFrom};
 

@@ -1,3 +1,5 @@
+//! The `CDUP` command, which changes the current directory to the parent directory.
+
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, SuccessResponse, PermanentError};

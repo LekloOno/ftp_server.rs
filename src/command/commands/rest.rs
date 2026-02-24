@@ -1,3 +1,5 @@
+//! The `REST` command, which allows the client to specify a byte offset for resuming file transfers.
+
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 use crate::{client::FtpClient, command::{Execute, FtpCommandExec, tools}};
 use crate::response::{FtpResponse, IntermediateReply};

@@ -1,3 +1,5 @@
+//! The `RETR` command, which retrieves a file from the server and sends it to the client over a data connection.
+
 use std::fs::File;
 use std::io::{copy, Seek, SeekFrom};
 

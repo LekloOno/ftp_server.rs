@@ -1,3 +1,5 @@
+//! The `RMD` command, which removes the specified directory from the server.
+
 use std::fs;
 
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};

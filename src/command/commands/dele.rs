@@ -1,3 +1,5 @@
+//! The `DELE` command, which deletes the specified file from the server.
+
 use std::fs;
 
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
