@@ -27,6 +27,9 @@ pub struct FtpClient<'a> {
 
     /// Whether or not the user has fully authentified yet.
     pub authentified: bool,
+
+    /// The offset to restart a file transfer from, in case of an interrupted transfer.
+    pub restart_offset: u64,
 }
 
 impl<'a> FtpClient<'a> {
@@ -38,6 +41,7 @@ impl<'a> FtpClient<'a> {
             username: String::new(),
             authentified: false,
             data_type: DataType::Binary,
+            restart_offset: 0,
             server
         }
     }
