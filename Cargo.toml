@@ -1,12 +1,12 @@
 [package]
-name = "ftp-server"
+name = "ftp_server"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
 clap = { version = "4.5.57", features = ["derive"] }
-ftp_command_parser = { path = "../ftp_command_parser" }
+ftp_command_parser = { path = "./ftp_command_parser" }
 thiserror = "2.0.18"
-ftp_response_impl = { path = "../ftp_response_impl" }
+ftp_response_impl = { path = "./ftp_response_impl" }
 strum = "0.27.2"
 strum_macros = "0.27.2"
