@@ -11,3 +11,10 @@ ftp_response_impl = { path = "./ftp_response_impl" }
 strum = "0.27.2"
 strum_macros = "0.27.2"
 sha2 = "0.10.9"
+
+[workspace]
+members = [
+    ".",
+    "ftp_command_parser",
+    "ftp_response_impl"
+]

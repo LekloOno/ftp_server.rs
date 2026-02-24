@@ -6,7 +6,7 @@ stages:
 pages:
   stage: docs
   script:
-    - cargo doc --no-deps
+    - cargo doc --workspace --no-deps
     - mkdir -p public
     - cp -r target/doc/* public/
     - echo '<meta http-equiv="refresh" content="0; url=ftp_server/index.html">' > public/index.html
