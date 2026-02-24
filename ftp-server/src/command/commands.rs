@@ -10,3 +10,4 @@ pub mod dtype;
 pub mod retr;
 pub mod stor;
 pub mod dele;
+pub mod mkd;
