@@ -71,15 +71,15 @@ pub fn get_one_arg_relaxed<T: FtpCommand>(arg: Option<String>) -> ftp_command_pa
 /// 
 /// # Returns
 /// If it contains exactly one string argument (that might include separator chars), returns such argument.
-pub fn get_path_arg<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpParseError> {
+pub fn get_path_arg<T: FtpCommand>(arg: Option<String>) -> ftp_command_parser::Result<String> {
     let Some(arg_str) = arg else {
-        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
+        return Err(ftp_command_parser::Error::UnvalidCmdArg { arg, code: T::name().to_string() });
     };
     
     let trimmed = arg_str.trim();
     
     if trimmed.is_empty() {
-        return Err(FtpParseError::UnvalidCmdArg { arg: Some(arg_str), code: T::name().to_string() });
+        return Err(ftp_command_parser::Error::UnvalidCmdArg { arg: Some(arg_str), code: T::name().to_string() });
     }
 
     Ok(trimmed.to_string())
