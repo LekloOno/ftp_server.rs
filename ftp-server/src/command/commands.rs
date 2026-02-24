@@ -7,3 +7,4 @@ pub mod cdup;
 pub mod list;
 pub mod quit;
 pub mod dtype;
+pub mod retr;
