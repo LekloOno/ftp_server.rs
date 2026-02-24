@@ -143,19 +143,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ftp-server"
-version = "0.1.0"
-dependencies = [
- "clap",
- "ftp_command_parser",
- "ftp_response_impl",
- "sha2",
- "strum",
- "strum_macros",
- "thiserror",
-]
-
-[[package]]
 name = "ftp_command_parser"
 version = "0.1.0"
 dependencies = [
@@ -169,6 +156,19 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "ftp_server"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "ftp_command_parser",
+ "ftp_response_impl",
+ "sha2",
+ "strum",
+ "strum_macros",
+ "thiserror",
 ]
 
 [[package]]
