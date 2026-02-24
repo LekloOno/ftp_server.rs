@@ -24,7 +24,8 @@ You can see available options, format and brief command documentation with :
 cargo run --release -- -h
 ```
 
-*--release is optional, you can run it without the option for a faster compilation time.
+*--release is optional, you can run it without the option for a faster compilation time.  
+**It is also possible to call the command directly from the built binary, on standard configuration, you will find them under `target/debug/ftp_server` and `target/release/ftp_server`.
 
 ## Brief
 
