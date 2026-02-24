@@ -64,6 +64,6 @@ impl Execute for CmdRetr {
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdRetr {
     fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
-        Ok(Box::new(CmdRetr { pathname: tools::get_one_arg::<Self>(arg)? }))
+        Ok(Box::new(CmdRetr { pathname: tools::get_one_arg_relaxed::<Self>(arg)? }))
     }
 }

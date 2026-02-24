@@ -64,6 +64,6 @@ impl Execute for CmdStor {
 
 impl BuildableFtpCommand<dyn FtpCommandExec> for CmdStor {
     fn build(arg: Option<String>) -> Result<Box<dyn FtpCommandExec>, FtpParseError> {
-        Ok(Box::new(CmdStor { pathname: tools::get_one_arg::<Self>(arg)? }))
+        Ok(Box::new(CmdStor { pathname: tools::get_one_arg_relaxed::<Self>(arg)? }))
     }
 }

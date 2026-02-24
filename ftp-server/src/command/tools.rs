@@ -24,17 +24,39 @@ pub fn get_no_args<T: FtpCommand>(arg: Option<String>) -> Result<(), FtpParseErr
 /// # Returns
 /// If it contains exactly one string argument, returns such argument.
 pub fn get_one_arg<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpParseError> {
-    let Some(password) = &arg else {
+    let Some(arg_str) = &arg else {
         return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
     };
     
     // We could be smarter and iterate then stop once we have more than one args
     // This would avoid potential expensive collect .. Probably negligeable anyways
-    let args = password.split_whitespace().collect::<Vec<&str>>();
+    let args = arg_str.split_whitespace().collect::<Vec<&str>>();
 
     if args.len() != 1 {
         return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
     }
 
     Ok(args[0].to_string())
+}
+
+/// Checks if the provided arg option contains exactly one argument.
+/// 
+/// The difference with [`get_one_arg`] is that the relaxed version allows separator chars within the argument.<br/>
+/// This means it will only try to split the provided argument string once, at the first separator, and the other
+/// separators will be considered to be part of the provided single argument.
+/// 
+/// This typically allows to have separator chars within such arg itself, which is necessary for file names for example.
+/// 
+/// # Returns
+/// If it contains exactly one string argument (that might include separator chars), returns such argument.
+pub fn get_one_arg_relaxed<T: FtpCommand>(arg: Option<String>) -> Result<String, FtpParseError> {
+    let Some(arg_str) = &arg else {
+        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
+    };
+    
+    let Some((_, r_arg)) = arg_str.split_once(char::is_whitespace) else {
+        return Err(FtpParseError::UnvalidCmdArg { arg, code: T::name().to_string() });
+    };
+
+    Ok(r_arg.to_string())
 }
