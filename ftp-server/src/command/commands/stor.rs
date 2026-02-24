@@ -1,5 +1,5 @@
-use std::fs::File;
-use std::io::copy;
+use std::fs::OpenOptions;
+use std::io::{copy, Seek, SeekFrom};
 
 use ftp_command_parser::{command::{BuildableFtpCommand, FtpCommand}, parser::FtpParseError};
 use crate::{check_auth, client::FtpClient, command::{Execute, FtpCommandExec, tools}};
@@ -32,7 +32,12 @@ impl Execute for CmdStor {
     fn execute(&self, client: &mut FtpClient) -> crate::Result<()> {
         check_auth!(client);
 
-        let mut file = match File::create(&self.pathname) {
+        let mut file = match OpenOptions::new()
+            .write(true)
+            .create(true)
+            .truncate(client.restart_offset == 0)
+            .open(&self.pathname) 
+        {
             Ok(f) => f,
             Err(_) => {
                 PermanentError::FileUnavailable {
@@ -41,6 +46,16 @@ impl Execute for CmdStor {
                 return Ok(());
             }
         };
+
+        if client.restart_offset > 0 {
+            if let Err(e) = file.seek(SeekFrom::Start(client.restart_offset)) {
+                PermanentError::FileUnavailable {
+                    details: format!("Cannot seek file: {}", e)
+                }.send(client.control())?;
+                return Ok(());
+            }
+            client.restart_offset = 0;
+        }
 
         let (ctrl_stream, data_stream) = client.streams();
         let Some(mut data_stream) = data_stream else {

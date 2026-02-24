@@ -6,7 +6,8 @@ use ftp_server::command::commands::{
     user::CmdUser, pass::CmdPass, pwd::CmdPwd, cwd::CmdCwd, 
     pasv::CmdPasv, cdup::CmdCdup, list::CmdList, quit::CmdQuit, 
     dtype::CmdType, retr::CmdRetr, stor::CmdStor, dele::CmdDele,
-    mkd::CmdMkd, rmd::CmdRmd, syst::CmdSyst, port::CmdPort
+    mkd::CmdMkd, rmd::CmdRmd, syst::CmdSyst, port::CmdPort,
+    rest::CmdRest
 };
 
 use ftp_server::server::FtpServer;
@@ -31,6 +32,7 @@ fn main() {
         .register_command::<CmdRmd>()
         .register_command::<CmdSyst>()
         .register_command::<CmdPort>()
+        .register_command::<CmdRest>()
         .hostname(args.host)
         .port(args.port)
         .add_user(args.username, args.password)
