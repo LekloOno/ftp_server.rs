@@ -60,3 +60,47 @@ pub fn get_one_arg_relaxed<T: FtpCommand>(arg: Option<String>) -> Result<String,
 
     Ok(r_arg.to_string())
 }
+
+/// A quick hand to simplify implementations of commands that require authentication.
+/// 
+/// It checks if the provided client is authentified, and if not, sends a `NotLoggedIn`
+/// response through the control stream and early returns `Ok(())`.
+#[macro_export]
+macro_rules! check_auth {
+    ($client:expr) => {
+        if !$client.authentified {
+            crate::response::perma_error::PermanentError::NotLoggedIn { details: String::new() }.send($client.control())?;
+            return Ok(());
+        }
+    };
+}
+
+/// A quick helper to send a generic Ok response, with an optionnal custom message
+/// 
+/// # Usage
+/// ```rs
+/// send_ok!(client.control());
+/// // Equivalent to
+/// SuccessResponse::Generic { details: "Ok !".to_string() }
+///     .send(client.control);
+/// // Or
+/// client.control.write("200 Ok !");
+/// 
+/// let name = "big chungus";
+/// let count = 3;
+/// send_ok!(client.control(), "Sucessfully summoned {count} {name} demon(s)")
+/// // Equivalent to (without string allocation !)
+/// SuccessResponse::Generic { details: format!("Successfully summoned {count} {name} demon(s)" }
+///     .send(client.control);
+/// // or
+/// write!(client.control, "200 Successfully summoned {count} {name} demon(s)");
+/// ```
+#[macro_export]
+macro_rules! send_ok {
+    ($ctrl:expr) => {
+        SuccessResponse::Generic { details: "Ok !".to_string() }.send($ctrl)
+    };
+    ($ctrl:expr, $fmt:literal $(, $($arg:tt)*)?) => {
+        SuccessResponse::Generic { details: format!($fmt $(, $($arg)*)?) }.send($ctrl)
+    };
+}

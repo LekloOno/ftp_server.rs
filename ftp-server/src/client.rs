@@ -6,7 +6,6 @@ use crate::server::FtpServer;
 
 pub mod command;
 pub mod run;
-pub mod tools;
 
 /// Represents the server-side state of an FtpClient
 pub struct FtpClient<'a> {
