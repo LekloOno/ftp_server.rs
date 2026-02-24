@@ -1,4 +1,4 @@
-use std::{net::TcpListener, thread};
+use std::{env, fs, net::TcpListener, thread};
 
 
 use crate::{client::FtpClient, server::FtpServer};
@@ -9,6 +9,12 @@ impl FtpServer {
     /// Hostname, port, and other configurations should preemptively be set
     /// through the [`super::build`] methods.
     pub fn run(&self) -> crate::Result<()> {
+        if let Err(_) = env::set_current_dir(&self.root_path) {
+            // Sandbox dir creation
+            fs::create_dir(&self.root_path)?;
+            env::set_current_dir(&self.root_path)?;
+        }
+
         let addr = format!("{}:{}", self.hostname, self.port);
 
         let listener = TcpListener::bind(&addr)?;
