@@ -17,9 +17,9 @@ pub struct Cli {
     #[arg(short='P', long, default_value = "2121")]
     pub port: u16,
 
-    /// Prevents users from traversing parent directories of the `root_path`.
-    #[arg(short='t', long, default_value = "true")]
-    pub prevent_traversal: bool,
+    /// Disables root protection, and allows users from traversing parent directories of the `root_path`.
+    #[arg(short='t', long)]
+    pub allow_traversal: bool,
 
     /// Host to bind to - default: 127.0.0.1
     #[arg(short='H', long, default_value = "127.0.0.1")]
