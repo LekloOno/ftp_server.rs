@@ -5,7 +5,7 @@ use clap::Parser;
 use ftp_server::command::commands::{
     user::CmdUser, pass::CmdPass, pwd::CmdPwd, cwd::CmdCwd, 
     pasv::CmdPasv, cdup::CmdCdup, list::CmdList, quit::CmdQuit, 
-    dtype::CmdType, retr::CmdRetr, stor::CmdStor
+    dtype::CmdType, retr::CmdRetr, stor::CmdStor, dele::CmdDele
 };
 
 use ftp_server::server::FtpServer;
@@ -25,6 +25,7 @@ fn main() {
         .register_command::<CmdType>()
         .register_command::<CmdRetr>()
         .register_command::<CmdStor>()
+        .register_command::<CmdDele>()
         .hostname(args.host)
         .port(args.port)
         .add_user(args.username, args.password)

@@ -9,3 +9,4 @@ pub mod quit;
 pub mod dtype;
 pub mod retr;
 pub mod stor;
+pub mod dele;

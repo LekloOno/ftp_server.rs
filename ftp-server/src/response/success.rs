@@ -19,6 +19,8 @@ pub enum SuccessResponse {
     DirectoryChanged,
     #[ftp_res(code = 226, message = "Closing data connection. Requested file action successful.")]
     ClosingDataConnection,
+    #[ftp_res(code = 250, message = "File deleted successfully.")]
+    FileDeleted,
 }
 
 /// A quick helper to send a generic Ok response, with an optionnal custom message
