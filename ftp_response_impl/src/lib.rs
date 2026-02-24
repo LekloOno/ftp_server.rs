@@ -15,7 +15,7 @@ const MSG_IDENT: &'static str = "message";
 /// 
 /// It implements the `FtpResponse` trait automatically, using the provided arguments.
 /// 
-/// **#[ftp_res]
+/// **#[ftp_res]**
 /// * `code` - corresponds to the numerical code 1xx, 2xx, 3xx, 4xx, 5xx or 6xx of the response
 /// and will be displayed first in the formated response.
 /// 
