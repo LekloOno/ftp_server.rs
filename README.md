@@ -10,7 +10,7 @@
 | [ftp_command_parser](ftp_command_parser/) | Defines an abstract and extendable initial interface to parse ftp commands.   |
 | [ftp_response_impl](ftp_response_impl/)   | Defines a procedural macro to simplify implementing new Ftp server responses. |
 | --*CI*--                                  | -- |
-| [documentation](https://gitlabpages.univ-lille.fr/sr1-tp2-petremand-boudier-2de2f6/ftp_server/index.html) | A complete web documentation of the project. |
+| [documentation](https://lekloono.github.io/ftp_server.rs/ftp_server/index.html) | A complete web documentation of the project. |
 
 ## Usage
 
@@ -49,4 +49,4 @@ All these have been tested using filezilla.
 It does not include :
 - Unit tests.
 
-You can read more about the structure and implementation of the project in the dedicated [documentation page](https://gitlabpages.univ-lille.fr/sr1-tp2-petremand-boudier-2de2f6/ftp_server/index.html).
+You can read more about the structure and implementation of the project in the dedicated [documentation page](https://lekloono.github.io/ftp_server.rs/ftp_server/index.html).
